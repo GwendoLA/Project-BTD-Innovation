@@ -158,9 +158,9 @@ void InitGame(void)
     // Initialize missiles
     for (int i = 0; i < MAX_MISSILES; i++)
     {
-        missile[i].origin = (Vector2){ 0, 0 };
-        missile[i].speed = (Vector2){ 0, 0 };
-        missile[i].position = (Vector2){ 0, 0 };
+        missile[i].origin = /*(Vector2)*/{ 0, 0 };
+        missile[i].speed = /*(Vector2)*/{ 0, 0 };
+        missile[i].position = /*(Vector2)*/{ 0, 0 };
 
         missile[i].active = false;
     }
@@ -168,9 +168,9 @@ void InitGame(void)
     // Initialize interceptors
     for (int i = 0; i < MAX_INTERCEPTORS; i++)
     {
-        interceptor[i].origin = (Vector2){ 0, 0 };
-        interceptor[i].speed = (Vector2){ 0, 0 };
-        interceptor[i].position = (Vector2){ 0, 0 };
+        interceptor[i].origin = /*(Vector2)*/{ 0, 0 };
+        interceptor[i].speed = /*(Vector2)*/{ 0, 0 };
+        interceptor[i].position = /*(Vector2)*/{ 0, 0 };
 
         interceptor[i].active = false;
     }
@@ -178,7 +178,7 @@ void InitGame(void)
     // Initialize explosions
     for (int i = 0; i < MAX_EXPLOSIONS; i++)
     {
-        explosion[i].position = (Vector2){ 0, 0 };
+        explosion[i].position = /*(Vector2)*/{ 0, 0 };
         explosion[i].frame = 0;
         explosion[i].active = false;
     }
@@ -187,15 +187,15 @@ void InitGame(void)
     int sparcing = screenWidth/(LAUNCHERS_AMOUNT + BUILDINGS_AMOUNT + 1);
 
     // Buildings and launchers placing
-    launcher[0].position = (Vector2){ 1*sparcing, screenHeight - LAUNCHER_SIZE/2 };
-    building[0].position = (Vector2){ 2*sparcing, screenHeight - BUILDING_SIZE/2 };
-    building[1].position = (Vector2){ 3*sparcing, screenHeight - BUILDING_SIZE/2 };
-    building[2].position = (Vector2){ 4*sparcing, screenHeight - BUILDING_SIZE/2 };
-    launcher[1].position = (Vector2){ 5*sparcing, screenHeight - LAUNCHER_SIZE/2 };
-    building[3].position = (Vector2){ 6*sparcing, screenHeight - BUILDING_SIZE/2 };
-    building[4].position = (Vector2){ 7*sparcing, screenHeight - BUILDING_SIZE/2 };
-    building[5].position = (Vector2){ 8*sparcing, screenHeight - BUILDING_SIZE/2 };
-    launcher[2].position = (Vector2){ 9*sparcing, screenHeight - LAUNCHER_SIZE/2 };
+    launcher[0].position = /*(Vector2)*/{ (float)1*sparcing, (float)screenHeight - LAUNCHER_SIZE/2 };
+    building[0].position = /*(Vector2)*/{ (float)2*sparcing, (float)screenHeight - BUILDING_SIZE/2 };
+    building[1].position = /*(Vector2)*/{ (float)3*sparcing, (float)screenHeight - BUILDING_SIZE/2 };
+    building[2].position = /*(Vector2)*/{ (float)4*sparcing, (float)screenHeight - BUILDING_SIZE/2 };
+    launcher[1].position = /*(Vector2)*/{ (float)5*sparcing, (float)screenHeight - LAUNCHER_SIZE/2 };
+    building[3].position = /*(Vector2)*/{ (float)6*sparcing, (float)screenHeight - BUILDING_SIZE/2 };
+    building[4].position = /*(Vector2)*/{ (float)7*sparcing, (float)screenHeight - BUILDING_SIZE/2 };
+    building[5].position = /*(Vector2)*/{ (float)8*sparcing, (float)screenHeight - BUILDING_SIZE/2 };
+    launcher[2].position = /*(Vector2)*/{ (float)9*sparcing, (float)screenHeight - LAUNCHER_SIZE/2 };
 
     // Buildings and launchers activation
     for (int i = 0; i < LAUNCHERS_AMOUNT; i++) launcher[i].active = true;
@@ -267,7 +267,7 @@ void UpdateGame(void)
                         {
                             if (launcher[j].active)
                             {
-                                if (CheckCollisionPointRec(missile[i].position,  (Rectangle){ launcher[j].position.x - LAUNCHER_SIZE/2, launcher[j].position.y - LAUNCHER_SIZE/2,
+                                if (CheckCollisionPointRec(missile[i].position,  /*(Rectangle)*/{ launcher[j].position.x - LAUNCHER_SIZE/2, launcher[j].position.y - LAUNCHER_SIZE/2,
                                                                                             LAUNCHER_SIZE, LAUNCHER_SIZE }))
                                 {
                                     // Missile dissapears
@@ -292,7 +292,7 @@ void UpdateGame(void)
                         {
                             if (building[j].active)
                             {
-                                if (CheckCollisionPointRec(missile[i].position,  (Rectangle){ building[j].position.x - BUILDING_SIZE/2, building[j].position.y - BUILDING_SIZE/2,
+                                if (CheckCollisionPointRec(missile[i].position,  /*(Rectangle)*/{ building[j].position.x - BUILDING_SIZE/2, building[j].position.y - BUILDING_SIZE/2,
                                                                                             BUILDING_SIZE, BUILDING_SIZE }))
                                 {
                                     // Missile dissapears
@@ -419,7 +419,8 @@ void DrawGame(void)
             // Draw explosions
             for (int i = 0; i < MAX_EXPLOSIONS; i++)
             {
-                if (explosion[i].active) DrawCircle(explosion[i].position.x, explosion[i].position.y, EXPLOSION_RADIUS*explosion[i].radiusMultiplier, EXPLOSION_COLOR);
+                // if (explosion[i].active) DrawCircle(explosion[i].position.x, explosion[i].position.y, EXPLOSION_RADIUS*explosion[i].radiusMultiplier, EXPLOSION_COLOR);
+                if (explosion[i].active) DrawCircle(explosion[i].position.x, explosion[i].position.y, EXPLOSION_RADIUS*explosion[i].radiusMultiplier, /*(Color)*/{ 125, 125, 125, 125 });
             }
 
             // Draw buildings and launchers
@@ -489,7 +490,7 @@ static void UpdateOutgoingFire()
         sideX = (interceptor[interceptorNumber].objective.x - interceptor[interceptorNumber].origin.x)*INTERCEPTOR_SPEED/module;
         sideY = (interceptor[interceptorNumber].objective.y - interceptor[interceptorNumber].origin.y)*INTERCEPTOR_SPEED/module;
 
-        interceptor[interceptorNumber].speed = (Vector2){ sideX, sideY };
+        interceptor[interceptorNumber].speed = /*(Vector2)*/{ sideX, sideY };
 
         // Update
         interceptorNumber++;
@@ -512,9 +513,9 @@ static void UpdateIncomingFire()
         missile[missileIndex].active = true;
 
         // Assign start position
-        missile[missileIndex].origin = (Vector2){ GetRandomValue(20, screenWidth - 20), -10 };
+        missile[missileIndex].origin = /*(Vector2)*/{ (float)GetRandomValue(20, screenWidth - 20), -10 };
         missile[missileIndex].position = missile[missileIndex].origin;
-        missile[missileIndex].objective = (Vector2){ GetRandomValue(20, screenWidth - 20), screenHeight + 10 };
+        missile[missileIndex].objective = /*(Vector2)*/{ (float)GetRandomValue(20, screenWidth - 20), (float)screenHeight + 10 };
 
         // Calculate speed
         module = sqrt( pow(missile[missileIndex].objective.x - missile[missileIndex].origin.x, 2) +
@@ -523,7 +524,7 @@ static void UpdateIncomingFire()
         sideX = (missile[missileIndex].objective.x - missile[missileIndex].origin.x)*MISSILE_SPEED/module;
         sideY = (missile[missileIndex].objective.y - missile[missileIndex].origin.y)*MISSILE_SPEED/module;
 
-        missile[missileIndex].speed = (Vector2){ sideX, sideY };
+        missile[missileIndex].speed = /*(Vector2)*/{ sideX, sideY };
 
         // Update
         missileIndex++;
