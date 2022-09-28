@@ -8,6 +8,7 @@ LINK_DIRECTORIES(
     C:/vcpkg/installed/x64-windows/lib/
 )
 add_executable(TestRaylib main.cpp)
+# add_executable(TestRaylib some.cpp)
 TARGET_LINK_LIBRARIES(TestRaylib
     raylib
 )
