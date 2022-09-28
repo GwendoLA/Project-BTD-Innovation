@@ -8,6 +8,7 @@ static int screenHeight = 450;
 int main(void) {
     std::cout << "Hello World!";
     InitWindow(screenWidth, screenHeight, "classic game: missile commander");
-    CloseWindow();        // Close window and OpenGL context
+    CloseWindow();
+    std::cout << "Goodbye World!";
     return 0;
 }
