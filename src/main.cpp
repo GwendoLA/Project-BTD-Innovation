@@ -4,7 +4,7 @@
 #define SQUARE_SIZE 100
 static int screenWidth = 1600;
 static int screenHeight = 900;
-static Vector2 offset = {100, 100};
+
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -29,7 +29,7 @@ int main(void)
 {
 
     // Initialisation fenetre
-    InitWindow(screenWidth, screenHeight, "czaeazeazazgdrlassic game: missile commander");
+    InitWindow(screenWidth, screenHeight, "classic game: missile commander");
 
     SetTargetFPS(60);
 
