@@ -1,64 +1,61 @@
-/*******************************************************************************************
-*
-*   raylib [shapes] example - Cubic-bezier lines
-*
-*   Example originally created with raylib 1.7, last time updated with raylib 1.7
-*
-*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
-*   BSD-like license that allows static linking with closed source software
-*
-*   Copyright (c) 2017-2022 Ramon Santamaria (@raysan5)
-*
-********************************************************************************************/
 
 #include "raylib.h"
+#include <iostream>
+#define SQUARE_SIZE 50
+static int screenWidth = 1600;
+static int screenHeight = 900;
+static Vector2 offset = {0};
 
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
 int main(void)
 {
-    // Initialization
+
+    // Initialisation fenetre
+    InitWindow(screenWidth, screenHeight, "classic game: missile commander");
+
+    SetTargetFPS(60);
+
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
-
-    SetConfigFlags(FLAG_MSAA_4X_HINT);
-    InitWindow(screenWidth, screenHeight, "raylib [shapes] example - cubic-bezier lines");
-
-    Vector2 start = { 0, 0 };
-    Vector2 end = { (float)screenWidth, (float)screenHeight };
-
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    int index = 0;
 
     // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        // Update
-        //----------------------------------------------------------------------------------
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) start = GetMousePosition();
-        else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) end = GetMousePosition();
-        //----------------------------------------------------------------------------------
+        index++;
+        std::cout << '\r' << index;
 
-        // Draw
-        //----------------------------------------------------------------------------------
         BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-            ClearBackground(RAYWHITE);
+        for (int i = 0; i < screenWidth / SQUARE_SIZE + 1; i++)
+        {
+            DrawLineV({SQUARE_SIZE * i + offset.x / 2, offset.y / 2}, {SQUARE_SIZE * i + offset.x / 2, screenHeight - offset.y / 2}, LIGHTGRAY);
+        }
 
-            DrawText("USE MOUSE LEFT-RIGHT CLICK to DEFINE LINE START and END POINTS", 15, 20, 20, GRAY);
-
-            DrawLineBezier(start, end, 20.0f, RED);
+        for (int i = 0; i < screenHeight / SQUARE_SIZE + 1; i++)
+        {
+            DrawLineV({offset.x / 2, SQUARE_SIZE * i + offset.y / 2}, {screenWidth - offset.x / 2, SQUARE_SIZE * i + offset.y / 2}, LIGHTGRAY);
+        }
+        DrawText(TextFormat("ROUND %4i \nMONEY %4i \nVIES %4i", index, -2 * index, -index), 1250, 10, 40, MAGENTA);
+        // DrawRectangle(0, 100, 300, 80, DARKGRAY);  // gauche, haut, longueur, largeur
+        
+        for (int i=1; i<8; i++)
+        {
+             DrawRectangle(0, 50, i*50, 50, DARKGRAY);
+        }
+        
+        // DrawRectangle(300, 400, 300, 80, DARKGRAY);
+        // DrawRectangle(600, 180, 80, 300, DARKGRAY);
+        // DrawRectangle(600, 100, 500, 80, DARKGRAY);
+        // DrawRectangle(1100, 100, 80, 550, DARKGRAY);
 
         EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
+    CloseWindow(); // Close window and OpenGL context
 
+    std::cout << "Goodbye World!";
     return 0;
 }
