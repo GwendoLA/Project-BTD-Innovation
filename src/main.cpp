@@ -29,7 +29,7 @@ int main(void)
 {
 
     // Initialisation fenetre
-    InitWindow(screenWidth, screenHeight, "classic game: missile commander");
+    InitWindow(screenWidth, screenHeight, "");
 
     SetTargetFPS(60);
 
