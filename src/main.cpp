@@ -1,13 +1,12 @@
 
 #include "raylib.h"
 #include <iostream>
+
 #define SQUARE_SIZE 100
+
 static int screenWidth = 1600;
 static int screenHeight = 900;
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
 void lignes_chemin(int x_depart, int y, int x_arrivee)
 {
     for (int i = 0; i < x_arrivee - x_depart + 1; i++)
