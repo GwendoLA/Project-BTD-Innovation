@@ -1,7 +1,7 @@
 
 #include "raylib.h"
 #include <iostream>
-#define SQUARE_SIZE 50
+#define SQUARE_SIZE 100
 static int screenWidth = 1600;
 static int screenHeight = 900;
 static Vector2 offset = {0};
@@ -41,9 +41,9 @@ int main(void)
         DrawText(TextFormat("ROUND %4i \nMONEY %4i \nVIES %4i", index, -2 * index, -index), 1250, 10, 40, MAGENTA);
         // DrawRectangle(0, 100, 300, 80, DARKGRAY);  // gauche, haut, longueur, largeur
         
-        for (int i=1; i<8; i++)
+        for (int i=1; i<6; i++)
         {
-             DrawRectangle(0, 50, i*50, 50, DARKGRAY);
+             DrawRectangle(0, SQUARE_SIZE, i*SQUARE_SIZE, SQUARE_SIZE, DARKGRAY);
         }
         
         // DrawRectangle(300, 400, 300, 80, DARKGRAY);
