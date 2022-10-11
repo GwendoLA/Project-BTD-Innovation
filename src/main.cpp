@@ -6,6 +6,39 @@
 
 static int screenWidth = 1600;
 static int screenHeight = 900;
+int btnState = 0;               // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
+bool btnAction = false;         // Button action should be activated
+
+typedef struct Button {
+    bool etat;
+    Vector2 position;
+    Vector2 taille;
+    Color color; 
+} Button;
+
+Button creer_bouton (Vector2 position, Vector2 taille) {
+    Button bouton;
+    bouton.etat= false;
+    bouton.position= position;
+    bouton.taille= taille;
+    bouton.color= GRAY;
+    return bouton;
+}
+
+bool detect_click (Button bouton) {
+    Rectangle rectangle {bouton.position.x , bouton.position.y , bouton.taille.x , bouton.taille.y};
+    Vector2 position_souris = GetMousePosition();
+
+    if (CheckCollisionPointRec(position_souris, rectangle)) {
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) return true;
+    }
+
+    return false; 
+}
+
+void dessiner_bouton (Button bouton) {
+    DrawRectangle(bouton.position.x , bouton.position.y , bouton.taille.x , bouton.taille.y, MAGENTA);
+}
 
 void lignes_chemin(int x_depart, int y, int x_arrivee)
 {
@@ -23,6 +56,8 @@ void colonnes_chemin(int x, int y_depart, int y_arrivee)
     }
 }
 
+
+
 int main(void)
 {
 
@@ -37,6 +72,7 @@ int main(void)
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
+        
         index++;
         std::cout << '\r' << index;
 
@@ -69,6 +105,8 @@ int main(void)
         lignes_chemin(10, 2, 11);
         colonnes_chemin(11, 1, 1);
 
+    
+
         // DrawRectangle(300, 400, 300, 80, DARKGRAY);
         // DrawRectangle(600, 180, 80, 300, DARKGRAY);
         // DrawRectangle(600, 100, 500, 80, DARKGRAY);
@@ -79,6 +117,8 @@ int main(void)
 
     CloseWindow(); // Close window and OpenGL context
 
+    
+    
     std::cout << "Goodbye World!";
     return 0;
 }
