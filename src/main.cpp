@@ -1,6 +1,7 @@
 
 #include "raylib.h"
 #include <iostream>
+#include "menu.cpp"
 
 #define SQUARE_SIZE 100
 
@@ -60,12 +61,12 @@ void colonnes_chemin(int x, int y_depart, int y_arrivee)
 
 int main(void)
 {
-
     // Initialisation fenetre
     InitWindow(screenWidth, screenHeight, "classic game: missile commander");
 
     SetTargetFPS(60);
 
+    menu();
     //--------------------------------------------------------------------------------------
     int index = 0;
 
@@ -77,6 +78,7 @@ int main(void)
         std::cout << '\r' << index;
 
         BeginDrawing();
+        
         ClearBackground(RAYWHITE);
 
         for (int i = 0; i < screenWidth / SQUARE_SIZE + 1; i++)
