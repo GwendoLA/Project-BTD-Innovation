@@ -42,8 +42,8 @@ bool detect_click (Button bouton) {
 }
 
 void dessiner_bouton (Button bouton) {
-    DrawRectangle(bouton.position.x , bouton.position.y , bouton.taille.x , bouton.taille.y, MAGENTA);
-    DrawText(TextFormat(bouton.ecriture), bouton.position.x, bouton.position.y, 40, GREEN);
+    DrawRectangle(bouton.position.x , bouton.position.y , bouton.taille.x , bouton.taille.y, GRAY);
+    DrawText(TextFormat(bouton.ecriture), bouton.position.x+0.25*SQUARE_SIZE, bouton.position.y+0.25*SQUARE_SIZE, 40, WHITE);
 }
 
 void lignes_chemin(int x_depart, int y, int x_arrivee)
@@ -75,7 +75,7 @@ int main(void)
     //--------------------------------------------------------------------------------------
     int index = 0;
 
-    Button bouton1= creer_bouton ({13*SQUARE_SIZE, 7*SQUARE_SIZE}, {2*SQUARE_SIZE, SQUARE_SIZE}, "COUCOU");
+    Button bouton1= creer_bouton ({13*SQUARE_SIZE, 7*SQUARE_SIZE}, {2.25*SQUARE_SIZE, SQUARE_SIZE}, "COUCOU");
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -87,6 +87,7 @@ int main(void)
         BeginDrawing();
         
         ClearBackground(RAYWHITE);
+        DrawRectangle(12.5*SQUARE_SIZE, 0.25*SQUARE_SIZE , 3.25*SQUARE_SIZE, 8.5*SQUARE_SIZE,LIGHTGRAY);
         dessiner_bouton(bouton1);
 
         for (int i = 0; i < screenWidth / SQUARE_SIZE + 1; i++)
@@ -99,7 +100,7 @@ int main(void)
             DrawLineV({0.0, (float)(SQUARE_SIZE * i)}, {(float)(screenWidth), (float)(SQUARE_SIZE * i)}, LIGHTGRAY);
         }
 
-        DrawText(TextFormat(" ROUND %4i \nMONEY %4i \nVIES %4i", index, -2 * index, -index), 1250, 10, 40, MAGENTA);
+        DrawText(TextFormat(" ROUND : %4i \n MONEY : %4i \n VIES : %4i", index, -2 * index, -index), 1250, 30, 40, MAGENTA);
         // DrawRectangle(0, 100, 300, 80, DARKGRAY);  // gauche, haut, longueur, largeur
 
         lignes_chemin(1, 4, 2);
@@ -118,8 +119,22 @@ int main(void)
         // Verif si le bouton est cliqué
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
             if (detect_click (bouton1)) {
-                std::cout << "coucou";
+                if (bouton1.etat== false){
+                    bouton1.etat=true;
+                }
+
+                else if (bouton1.etat==true){
+                    bouton1.etat=false;
+                }
             }
+        }
+
+        if (bouton1.etat== true){
+            strcpy(bouton1.ecriture, "coucou");
+        }
+
+        if (bouton1.etat==false){
+            strcpy(bouton1.ecriture, "COUCOU");
         }
 
 
