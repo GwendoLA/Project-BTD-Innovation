@@ -87,8 +87,6 @@ int main(void)
         BeginDrawing();
         
         ClearBackground(RAYWHITE);
-        DrawRectangle(12.5*SQUARE_SIZE, 0.25*SQUARE_SIZE , 3.25*SQUARE_SIZE, 8.5*SQUARE_SIZE,LIGHTGRAY);
-        dessiner_bouton(bouton1);
 
         for (int i = 0; i < screenWidth / SQUARE_SIZE + 1; i++)
         {
@@ -100,7 +98,10 @@ int main(void)
             DrawLineV({0.0, (float)(SQUARE_SIZE * i)}, {(float)(screenWidth), (float)(SQUARE_SIZE * i)}, LIGHTGRAY);
         }
 
+        DrawRectangle(12.5*SQUARE_SIZE, 0.25*SQUARE_SIZE , 3.25*SQUARE_SIZE, 8.5*SQUARE_SIZE,LIGHTGRAY);
         DrawText(TextFormat(" ROUND : %4i \n MONEY : %4i \n VIES : %4i", index, -2 * index, -index), 1250, 30, 40, MAGENTA);
+        dessiner_bouton(bouton1);
+
         // DrawRectangle(0, 100, 300, 80, DARKGRAY);  // gauche, haut, longueur, largeur
 
         lignes_chemin(1, 4, 2);
@@ -130,7 +131,7 @@ int main(void)
         }
 
         if (bouton1.etat== true){
-            strcpy(bouton1.ecriture, "coucou");
+            strcpy(bouton1.ecriture, " coucou");
         }
 
         if (bouton1.etat==false){
