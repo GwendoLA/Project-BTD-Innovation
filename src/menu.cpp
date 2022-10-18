@@ -12,16 +12,3 @@ void menu() {
         EndDrawing();
     }
 }
-
-
-int main2(void){
-
-    InitWindow(1600, 900, "Menu start");
-    SetTargetFPS(60);
-
-    menu();
-
-    CloseWindow(); // Close window and OpenGL context
-    return 0;
-}
-
