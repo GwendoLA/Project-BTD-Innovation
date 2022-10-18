@@ -7,7 +7,11 @@ all: default
 default:
 	@g++ src/main.cpp -o ./${name}.exe -O2 -Wall -Wno-missing-braces -I ${include_path} -L ${lib_path} -lraylib -lopengl32 -lgdi32 -lwinmm
 	@./${name}.exe
-test:
+menu:
 	echo starting
 	@g++ src/menu.cpp -o ./${name}.exe -O2 -Wall -Wno-missing-braces -I ${include_path} -L ${lib_path} -lraylib -lopengl32 -lgdi32 -lwinmm
+	@./${name}.exe
+test:
+	echo starting
+	@g++ src/test.cpp -o ./${name}.exe -O2 -Wall -Wno-missing-braces -I ${include_path} -L ${lib_path} -lraylib -lopengl32 -lgdi32 -lwinmm
 	@./${name}.exe
