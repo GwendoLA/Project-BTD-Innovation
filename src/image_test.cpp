@@ -10,15 +10,15 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 1800;
-    const int screenHeight = 1450;
+    const int screenWidth = 1300;
+    const int screenHeight = 900;
 
     InitWindow(screenWidth, screenHeight, "raylib [textures] example - image processing");
 
     // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
 
-    Image imOrigin = LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/901811.png"); // Loaded in CPU memory (RAM)
-    ImageFormat(&imOrigin, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);                                                    // Format image to RGBA 32bit (required for texture update) <-- ISSUE
+    Image imOrigin = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png"); // Loaded in CPU memory (RAM)
+    //  ImageFormat(&imOrigin, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);                                                    // Format image to RGBA 32bit (required for texture update) <-- ISSUE
     Texture2D texture = LoadTextureFromImage(imOrigin);                                                           // Image converted to texture, GPU memory (VRAM)
 
     SetTargetFPS(60);
