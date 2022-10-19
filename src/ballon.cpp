@@ -47,47 +47,59 @@ int main(){
     InitWindow(screenWidth, screenHeight, "test collision avec structure");
     SetTargetFPS(60);
     /// (COL) Rectangle boxA = { 10, GetScreenHeight()/2.0f - 50, 50, 50 };
-    Rectangle box1 = { 50, 50, 200, 200 };
-    Rectangle box2 = { 250, 50, 200, 200 };
-    Rectangle box3 = { 250, 250, 200, 200 };
-    Rectangle box4 = { 50, 250, 200, 200 };
+    Rectangle box1 = { 50, 50, 150, 150 };
+    Rectangle box2 = { 200, 50, 150, 150 };
+    Rectangle box3 = { 350, 50, 150, 150 };
+    Rectangle box4 = { 500, 50, 150, 150 };
+    Rectangle box5 = { 500, 200, 150, 150 };
+    Rectangle box6 = { 500, 350, 150, 150 };
+    Rectangle box7 = { 350, 350, 150, 150 };
+    Rectangle box8 = { 200, 350, 150, 150 };
 
     // LISTE DES RECTANGLES QUI VONT ETRE PARCOURRUS PAR LE BALLON
-    Rectangle liste_R[6]={box1,box2,box3,box4,box1,box2};
+    Rectangle liste_R[8]={box1,box2,box3,box4,box5,box6,box7,box8};
 
     /// (COL) int boxASpeedX = 2;
     /// (COL) int boxASpeedY = 3;
-    bool pause = false;
+    bool pause = false; // jeu en pause ou non, avec la barre espace
     int i=0;
+    int j=1;
+    int nbr_rectangle = 8; // nombre de rectangle du chemin
 
-    Ballon ballon1= creer_ballon ({150,150}, 50, 5);
+    Ballon ballon1= creer_ballon ({125,125}, 30, 5);
     while (!WindowShouldClose()){
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        DrawRectangleRec(box1, GREEN);
+        DrawRectangleRec(box1, BLUE);
         DrawRectangleRec(box2, BLUE);    
-        DrawRectangleRec(box3, PURPLE);
-        DrawRectangleRec(box4, YELLOW);
-
-        Vector4 bouge = bouger_ballon(ballon1,liste_R[2],liste_R[3]);
+        DrawRectangleRec(box3, BLUE);
+        DrawRectangleRec(box4, BLUE);
+        DrawRectangleRec(box5, BLUE);
+        DrawRectangleRec(box6, BLUE);    
+        DrawRectangleRec(box7, BLUE);
+        DrawRectangleRec(box8, BLUE);
         
         if (IsKeyPressed(KEY_SPACE)) pause = !pause;
         if (!pause) {
             /// (COL) boxA.x += boxASpeedX;
             /// (COL) boxA.y += boxASpeedY;   
-            if (IsKeyPressed(KEY_T)){ 
+            if (i!=j && j<nbr_rectangle){  // i et j permettent les itérations
+                i=j-1;
                 Vector4 bouge = bouger_ballon(ballon1,liste_R[i],liste_R[i+1]);
                 if (ballon1.position.x!=bouge.z){
-                    ballon1.position.x+=(bouge.x);   
+                    ballon1.position.x+=(bouge.x/60);   
                 }
                 if (ballon1.position.y!=bouge.w){
-                    ballon1.position.y+=(bouge.y);
+                    ballon1.position.y+=(bouge.y/60);
                 }                
                 if ((ballon1.position.x==bouge.z)&&(ballon1.position.y==bouge.w)){
-                        i+=1;
+                        j+=1;
                 }
+            }
+            if (j==nbr_rectangle){
+                // le ballon est à la fin du chemin -> fin du round
             }
         }
         
