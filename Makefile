@@ -15,3 +15,8 @@ test:
 	echo starting
 	@g++ src/test.cpp -o ./${name}.exe -O2 -Wall -Wno-missing-braces -I ${include_path} -L ${lib_path} -lraylib -lopengl32 -lgdi32 -lwinmm
 	@./${name}.exe
+
+%.cpp: %.cpp
+	@echo $@
+	@g++ src/$@ -o ./${name}.exe -O2 -Wall -Wno-missing-braces -I ${include_path} -L ${lib_path} -lraylib -lopengl32 -lgdi32 -lwinmm
+	@./${name}.exe
