@@ -2,15 +2,6 @@
 #include <iostream>
 #include <stdlib.h> 
 
-
-
-/////       INFOS         //////
-//// LES LIGNES COMMENCANT PAR "/// (COL)" SONT CELLE CODANT UNE COLLISION ENTRE UN RECTANGLE EN MOUVEMENT ET UN CERLE///
-//// LE CODE ACTIF PERMET DE FAIRE BOUGER UN BALLON ENTRE PLUSIEURS RECTANGLES /////
-
-static int screenWidth = 1000;
-static int screenHeight = 800;
-
 typedef struct Ballon { // Structure Ballon
     int etat;
     Vector2 position;
@@ -25,7 +16,7 @@ Ballon creer_ballon (Vector2 position, int radius) { // Pour créer un objet Bal
     ballon.position= position;
     ballon.radius= radius;
     ballon.rect=1;
-    ballon.color= BLACK;
+    ballon.color= RED;
     return ballon;
 }
 
@@ -62,64 +53,64 @@ Ballon mouv(Ballon B, Rectangle liste_R[8], int nbr_r, bool pause){
         }
         return B;               
     }
-    if (j==nbr_r){
-        return B ;            // le ballon est à la fin du chemin -> fin du round
+    else {
+        return B;            // le ballon est à la fin du chemin -> fin du round
     }   
 }
 
 
-int main(){
-    InitWindow(screenWidth, screenHeight, "test collision avec structure");
-    SetTargetFPS(60);
-    /// (COL) Rectangle boxA = { 10, GetScreenHeight()/2.0f - 50, 50, 50 };
-    Rectangle box1 = { 50, 50, 150, 150 };
-    Rectangle box2 = { 200, 50, 150, 150 };
-    Rectangle box3 = { 350, 50, 150, 150 };
-    Rectangle box4 = { 500, 50, 150, 150 };
-    Rectangle box5 = { 700, 200, 150, 150 };
-    Rectangle box6 = { 700, 350, 150, 150 };
-    Rectangle box7 = { 350, 350, 150, 150 };
-    Rectangle box8 = { 200, 550, 150, 150 };
+// int main(){
+//     InitWindow(screenWidth, screenHeight, "test collision avec structure");
+//     SetTargetFPS(60);
+//     /// (COL) Rectangle boxA = { 10, GetScreenHeight()/2.0f - 50, 50, 50 };
+//     Rectangle box1 = { 50, 50, 150, 150 };
+//     Rectangle box2 = { 200, 50, 150, 150 };
+//     Rectangle box3 = { 350, 50, 150, 150 };
+//     Rectangle box4 = { 500, 50, 150, 150 };
+//     Rectangle box5 = { 700, 200, 150, 150 };
+//     Rectangle box6 = { 700, 350, 150, 150 };
+//     Rectangle box7 = { 350, 350, 150, 150 };
+//     Rectangle box8 = { 200, 550, 150, 150 };
 
-    Ballon ballon1= creer_ballon ({125,125}, 30);
-    Ballon ballon2= creer_ballon ({125,125}, 20);
-    ballon2.color=RED;
+//     Ballon ballon1= creer_ballon ({125,125}, 30);
+//     Ballon ballon2= creer_ballon ({125,125}, 20);
+//     ballon2.color=RED;
 
-    // LISTE DES RECTANGLES QUI VONT ETRE PARCOURRUS PAR LE BALLON
-    Rectangle liste_R[8]={box1,box2,box3,box4,box5,box6,box7,box8};
+//     // LISTE DES RECTANGLES QUI VONT ETRE PARCOURRUS PAR LE BALLON
+//     Rectangle liste_R[8]={box1,box2,box3,box4,box5,box6,box7,box8};
 
-    /// (COL) int boxASpeedX = 2;
-    /// (COL) int boxASpeedY = 3;
-    bool pause = false; // jeu en pause ou non, avec la barre espace
-    int nbr_rectangle = 8; // nombre de rectangle du chemin
+//     /// (COL) int boxASpeedX = 2;
+//     /// (COL) int boxASpeedY = 3;
+//     bool pause = false; // jeu en pause ou non, avec la barre espace
+//     int nbr_rectangle = 8; // nombre de rectangle du chemin
     
-    while (!WindowShouldClose()){
+//     while (!WindowShouldClose()){
 
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
+//         BeginDrawing();
+//         ClearBackground(RAYWHITE);
 
-        DrawRectangleRec(box1, BLUE);
-        DrawRectangleRec(box2, BLUE);    
-        DrawRectangleRec(box3, BLUE);
-        DrawRectangleRec(box4, BLUE);
-        DrawRectangleRec(box5, BLUE);
-        DrawRectangleRec(box6, BLUE);    
-        DrawRectangleRec(box7, BLUE);
-        DrawRectangleRec(box8, BLUE);
+//         DrawRectangleRec(box1, BLUE);
+//         DrawRectangleRec(box2, BLUE);    
+//         DrawRectangleRec(box3, BLUE);
+//         DrawRectangleRec(box4, BLUE);
+//         DrawRectangleRec(box5, BLUE);
+//         DrawRectangleRec(box6, BLUE);    
+//         DrawRectangleRec(box7, BLUE);
+//         DrawRectangleRec(box8, BLUE);
         
-        if (IsKeyPressed(KEY_SPACE)) pause = !pause;
-        if (!pause) {
-            ballon1 = mouv(ballon1,liste_R,nbr_rectangle,pause); 
-            ballon2 = mouv(ballon2,liste_R,nbr_rectangle,pause);                 
-        }   
+//         if (IsKeyPressed(KEY_SPACE)) pause = !pause;
+//         if (!pause) {
+//             ballon1 = mouv(ballon1,liste_R,nbr_rectangle,pause); 
+//             ballon2 = mouv(ballon2,liste_R,nbr_rectangle,pause);                 
+//         }   
         
-        dessiner_ballon(ballon1);
-        dessiner_ballon(ballon2);
-        EndDrawing();
-    }
-    CloseWindow(); 
-    return 0;
-}
+//         dessiner_ballon(ballon1);
+//         dessiner_ballon(ballon2);  
+//         EndDrawing();
+//     }
+//     CloseWindow(); 
+//     return 0;
+// }
 
 /// (COL) if (((boxA.x + boxA.width) >= GetScreenWidth()) || (boxA.x <= 0)) boxASpeedX *= -1;
         /// (COL) if (((boxA.y + boxA.height) >= GetScreenHeight()) || (boxA.y <= 0)) boxASpeedY *= -1;
