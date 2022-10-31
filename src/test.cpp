@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <iostream>
 #include "menu.cpp"
+#include "ballon.cpp"
 #include <string.h>
 
 #define SQUARE_SIZE 100
@@ -185,6 +186,10 @@ int main(void)
     Singe singes[100] = {};
     int nb_singes = 0;
 
+    bool pause = false; // jeu en pause ou non, avec la barre espace
+    int nbr_rectangle = 36; // nombre de rectangle du chemin
+    Ballon ballon1= creer_ballon ({50,350}, 30);
+
     // Main game loop
     lignes_chemin(1, 4, 2, chemin, false);
     colonnes_chemin(3, 2, 4, chemin, true);
@@ -229,6 +234,11 @@ int main(void)
         {
             DrawRectangleRec(chemin[i], DARKGRAY);
         }
+        
+        if (IsKeyPressed(KEY_SPACE)) pause = !pause;
+        if (!pause) {
+            ballon1 = mouv(ballon1,chemin,nbr_rectangle,pause);
+        }
 
         // Verif si le bouton est cliqué
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
@@ -270,7 +280,7 @@ int main(void)
         // DrawRectangle(600, 180, 80, 300, DARKGRAY);
         // DrawRectangle(600, 100, 500, 80, DARKGRAY);
         // DrawRectangle(1100, 100, 80, 550, DARKGRAY);
-
+        dessiner_ballon(ballon1);
         EndDrawing();
     }
     UnloadTexture(texture); // Unload texture from VRAM
