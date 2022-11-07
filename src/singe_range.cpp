@@ -26,8 +26,10 @@ void dessiner_singe(Singe singe){
 }
 
 typedef struct Fleche { // Structure Fleche
-    int etat;  // visible ou non
-    int cible;  // a touché sa cible ou non
+    int etat;  // visible (1) ou non (0)
+    int cible;  // cible pas touchée (0), cible touchée (1), a atteint les bords (2)
+    int dir_x;  // sa direction vers sa cible, en x 
+    int dir_y;  // sa sirection vers sa cible, en y
     Vector2 position;
     Vector2 size;
     Color color; 
@@ -35,8 +37,10 @@ typedef struct Fleche { // Structure Fleche
 
 Fleche creer_fleche (Vector2 position) { // Pour créer un objet Ballon
     Fleche F;
-    F.etat= 0;
+    F.etat= 0; 
     F.cible=0;
+    F.dir_x=0;
+    F.dir_x=0;
     F.position= position;
     F.size={20,20};
     F.color= PINK;
@@ -64,7 +68,7 @@ Fleche check_coll_b_f(Fleche F, Ballon B, Singe S){
     Rect_F.y=F.position.y;
     Rect_F.height=F.size.x;
     Rect_F.width=F.size.y;
-    if (F.etat==0){
+    if (F.etat==0){  // on calcule une fois la direction que va suivre le ballon
         int mouv_x = B.position.x - S_center.x ;
         int mouv_y = B.position.y - S_center.y ;
         F.dir_x=mouv_x;
