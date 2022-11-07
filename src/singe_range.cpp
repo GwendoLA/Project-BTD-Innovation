@@ -64,34 +64,40 @@ Fleche check_coll_b_f(Fleche F, Ballon B, Singe S){
     Rect_F.y=F.position.y;
     Rect_F.height=F.size.x;
     Rect_F.width=F.size.y;
-    int mouv_x = B.position.x - S_center.x ;
-    int mouv_y = B.position.y - S_center.y ;
-    if (F.position.x!=B.position.x){
-        F.position.x+=(mouv_x/20); 
+    if (F.etat==0){
+        int mouv_x = B.position.x - S_center.x ;
+        int mouv_y = B.position.y - S_center.y ;
+        F.dir_x=mouv_x;
+        F.dir_y=mouv_y;
+        F.etat=1;
     }
-    if (F.position.y!=B.position.y){
-        F.position.y+=(mouv_y/20); 
-    }
-    if (CheckCollisionCircleRec(B.position,B.radius,Rect_F) ){
+    F.position.x+=(F.dir_x/10); 
+    F.position.y+=(F.dir_y/10); 
+
+    if (CheckCollisionCircleRec(B.position,B.radius,Rect_F)){
         F.etat=0;
-        F.cible=1;      
+        F.cible=1;    
+    }
+    if ((F.position.x<=0)||(F.position.y<=0)||(F.position.x>=GetScreenWidth())||(F.position.y>=GetScreenHeight())){
+        F.etat=0;
+        F.cible=2;
     }
     return F; 
 }
 
 
+
 // int main(){
 //     InitWindow(screenWidth, screenHeight, "test collision avec structure");
 //     SetTargetFPS(60);
-
-//     // POUR L'EXEMPLE, ON UTILISE DEUX BALLONS EN MOUVEMENT SUR LA MAP       
-//     Ballon ballon1= creer_ballon ({370,50}, 30);
-//     Ballon ballon2= creer_ballon ({500,500}, 30);
+      
+//     Ballon ballon1= creer_ballon ({650,50}, 30);
+//     Ballon ballon2= creer_ballon ({600,500}, 30);
 //     ballon2.color=BLUE;
 
-////   Singe singe1 = creer_singe({250,250});
-////   Fleche fleche1 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
-////   Fleche fleche2 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
+//     Singe singe1 = creer_singe({250,250});
+//     Fleche fleche1 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
+//     Fleche fleche2 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
 
 //     bool pause = false; // jeu en pause ou non, avec la barre espace
 
@@ -112,35 +118,37 @@ Fleche check_coll_b_f(Fleche F, Ballon B, Singe S){
 //         if (((ballon1.position.y + ballon1.radius) >= GetScreenHeight()) || (ballon1.position.y <= 0)) ballon1.vity *= -1;
 //         if (((ballon2.position.y + ballon2.radius) >= GetScreenHeight()) || (ballon2.position.y <= 0)) ballon2.vity *= -1;
         
-////       if (check_coll_s_b(singe1, ballon1)){
-////           fleche1.etat=1;
-////           if (fleche1.cible==0){
-////               fleche1=check_coll_b_f(fleche1,ballon1,singe1);
-////           }
-////           if (fleche1.cible==1){
-////               ballon1.etat=0; 
-////               fleche1.etat=0; 
-////           }  
-////       }  
+//         if (check_coll_s_b(singe1, ballon1)){
+//             if (fleche1.cible==0){
+//                 fleche1=check_coll_b_f(fleche1,ballon1,singe1);
+//             }
+//             if (fleche1.cible==1){
+//                 ballon1.etat=0; 
+//                 fleche1.etat=0; 
+//             }  
+//             if (fleche1.cible==2){
+//                 fleche1.etat=0;
+//             }
+//         }  
 
-////       if (check_coll_s_b(singe1, ballon2)){
-////           fleche2.etat=1;
-////           if (fleche2.cible==0){
-////               fleche2=check_coll_b_f(fleche2,ballon2,singe1);
-////           }
-////           if (fleche2.cible==1){
-////               ballon2.etat=0; 
-////               fleche2.etat=0; 
-////           }  
-////       }  
+//         if (check_coll_s_b(singe1, ballon2)){
+//             if (fleche2.cible==0){
+//                 fleche2=check_coll_b_f(fleche2,ballon2,singe1);
+//             }
+//             if (fleche2.cible==1){
+//                 ballon2.etat=0; 
+//                 fleche2.etat=0; 
+//             } 
+//             if (fleche2.cible==2){
+//                 fleche2.etat=0;
+//             } 
+//         }  
         
+//         dessiner_singe(singe1); 
+//         dessiner_fleche(fleche1); 
+//         dessiner_fleche(fleche2); 
 //         dessiner_ballon(ballon1);
 //         dessiner_ballon(ballon2); 
-
-////       dessiner_singe(singe1); 
-////       dessiner_fleche(fleche1); 
-////       dessiner_fleche(fleche2); 
-           
 //         EndDrawing();
 //     }
 //     CloseWindow(); 
