@@ -123,8 +123,7 @@ Fleche check_coll_b_f(Fleche F, Ballon B, Singe S){
 int main(){
     InitWindow(screenWidth, screenHeight, "test collision avec structure");
     SetTargetFPS(60);
-
-    // POUR L'EXEMPLE, ON UTILISE DEUX BALLONS EN MOUVEMENT SUR LA MAP       
+      
     Ballon ballon1= creer_ballon ({650,50}, 30);
     Ballon ballon2= creer_ballon ({600,500}, 30);
     ballon2.color=BLUE;
@@ -164,7 +163,6 @@ int main(){
                 fleche1.etat=0;
             }
         }  
-        
 
         if (check_coll_s_b(singe1, ballon2)){
             if (fleche2.cible==0){
@@ -184,9 +182,6 @@ int main(){
         dessiner_fleche(fleche2); 
         dessiner_ballon(ballon1);
         dessiner_ballon(ballon2); 
-
-        
-           
         EndDrawing();
     }
     CloseWindow(); 
