@@ -3,69 +3,26 @@
 #include <iostream>
 #include <vector>
  
+typedef struct Singe{
+    bool etat;
+    Vector2 position;
+    Vector2 taille;
+    int range;  // zone de detection des ballons
+    Color color;
+    Texture texture; 
+} Singe;
 
-void singe(Vector2 sp, Vector2 ss) {
-   BeginDrawing(); 
-   ClearBackground(RAYWHITE);
-   DrawRectangleV(sp,ss,RED); 
-   EndDrawing();
-   
+Singe creer_singe(Vector2 position){
+    Singe singe;
+    singe.etat = false;
+    singe.position = position;
+    singe.taille = {100, 100};
+    singe.range = 200;  // choix du range par defaut
+    singe.color = RED;
+    return singe;
 }
 
-void autre(Vector2 sp,Vector2 ss){
-   BeginDrawing();
-   ClearBackground(RAYWHITE);
-   DrawRectangleV(sp,ss,RED); 
-   EndDrawing(); 
-   }
-
-void vide(){
-   BeginDrawing();
-   ClearBackground(RAYWHITE);
-   EndDrawing(); 
+void dessiner_singe(Singe singe, Texture text){
+    DrawTexture(text, singe.position.x, singe.position.y, WHITE);
 }
-
-
-
-int main(void){
-
-   const int screenWidth = 800;
-   const int screenHeight = 450;
-   
-   InitWindow(screenWidth, screenHeight, "test singe");      
-   SetTargetFPS(60);
-   int s_start=0 ;
-   Vector2 s_p = {10,10};
-   Vector2 s_s = {50,50};
-   int i = 0;
-
-   while (!WindowShouldClose()){
-      if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){ 
-         s_start = (s_start+1)%3;
-         
-      }
-
-      if (s_start==1){  
-         Vector2 s_p = GetMousePosition();
-         Vector2 s_s = { 50 , 50 }; 
-         singe(s_p,s_s);
-         s_start=1 ;
-      }
-
-      else if (s_start==2){
-         static Vector2 s_p = GetMousePosition();
-         static Vector2 s_s = { 50 , 50 }; 
-         autre(s_p,s_s);
-         s_start=2 ;
-      }   
-
-      else {
-         vide();
-         s_start=0; 
-      }     
-   }
-   CloseWindow();    
-   return 0;
-}
-
 
