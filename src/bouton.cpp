@@ -37,10 +37,10 @@ bool detect_click(Button bouton)
     return false;
 }
 
-void dessiner_bouton(Button bouton)
+void dessiner_bouton(Button bouton, int taille_ecriture)
 {
     DrawRectangleV(bouton.position, bouton.taille, GRAY);
-    DrawText(TextFormat(bouton.ecriture), bouton.position.x + 0.25 * SQUARE_SIZE, bouton.position.y + 0.25 * SQUARE_SIZE, 30, WHITE);
+    DrawText(TextFormat(bouton.ecriture), bouton.position.x + 0.25 * SQUARE_SIZE, bouton.position.y + 0.25 * SQUARE_SIZE, taille_ecriture, WHITE);
 }
 
 
