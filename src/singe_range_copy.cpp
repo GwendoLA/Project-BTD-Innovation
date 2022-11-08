@@ -83,6 +83,8 @@ void dessiner_fleche (Fleche F) { // Pour dessiner un ballon, en fonction positi
     }
 }
 
+
+// check quand le ballon arrive dans le range du singe
 bool check_coll_s_b(Singe S, Ballon B){
     if (CheckCollisionCircles(S.position,S.range,B.position,B.radius)){
         Vector2 S_center = {S.position.x+((S.taille.x)/2),S.position.y+((S.taille.y)/2)};

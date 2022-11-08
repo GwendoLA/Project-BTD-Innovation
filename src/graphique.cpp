@@ -1,1 +1,0 @@
-// Fichier contenant toutes les fonctions pour les graphismes.

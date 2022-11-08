@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <iostream>
 #include <vector>
+#include "constantes.h"
  
 typedef struct Singe{
     bool etat;
@@ -26,3 +27,19 @@ void dessiner_singe(Singe singe, Texture text){
     DrawTexture(text, singe.position.x, singe.position.y, WHITE);
 }
 
+bool check_collision_singe(Singe singe, Rectangle rectangles[36])
+{
+    Rectangle s;
+    s.x = singe.position.x;
+    s.y = singe.position.y;
+    s.height = SQUARE_SIZE;
+    s.width = SQUARE_SIZE;
+    for (int i = 0; i < 36; i++)
+    {
+        if (CheckCollisionRecs(s, rectangles[i]))
+        {
+            return true;
+        }
+    }
+    return false;
+}
