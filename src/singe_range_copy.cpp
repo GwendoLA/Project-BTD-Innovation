@@ -1,5 +1,7 @@
 #include "raylib.h"
+#define _USE_MATH_DEFINES
 #include <iostream>
+#include <cmath>
 
 static int screenWidth = 1000;
 static int screenHeight = 900;
@@ -29,6 +31,7 @@ Ballon creer_ballon (Vector2 position, int radius) { // Pour créer un objet Bal
 void dessiner_ballon (Ballon ballon) { // Pour dessiner un ballon, en fonction position rayon et couleur
     if (ballon.etat==1){
     DrawCircleV(ballon.position,ballon.radius,ballon.color);
+    DrawRectangleV(ballon.position,{40,40},ballon.color);
     }
 }
 
@@ -37,6 +40,7 @@ typedef struct Singe{
     Vector2 position;
     Vector2 taille;
     int range;  // zone de detection des ballons
+    int ang;
     Color color;
     Texture texture; 
 } Singe;
@@ -45,21 +49,30 @@ Singe creer_singe(Vector2 position){
     Singe singe;
     singe.etat = false;
     singe.position = position;
-    singe.taille = {100, 100};
+    singe.taille = {50, 100};
     singe.range = 200;  // choix du range par defaut
+    singe.ang=10;
     singe.color = RED;
     return singe;
 }
 
-void dessiner_singe(Singe singe){
-    DrawRectangle(singe.position.x, singe.position.y, singe.taille.x, singe.taille.y, GREEN);
+void dessiner_singe(Singe &S){
+    S.ang+=5;
+    Vector2 S_center = {((S.taille.x)/2),((S.taille.y)/2)};
+
+    Rectangle Rect_S;
+    Rect_S.x=S.position.x;
+    Rect_S.y=S.position.y;
+    Rect_S.height=S.taille.y;
+    Rect_S.width=S.taille.x;
+    DrawRectanglePro(Rect_S,S_center,S.ang, GREEN);
 }
 
 typedef struct Fleche { // Structure Fleche
     int etat;  // visible (1) ou non (0)
     int cible;  // cible pas touchée (0), cible touchée (1), a atteint les bords (2)
-    int dir_x;  // sa direction vers sa cible, en x 
-    int dir_y;  // sa sirection vers sa cible, en y
+    float dir_x;  // sa direction vers sa cible, en x 
+    float dir_y;  // sa sirection vers sa cible, en y
     Vector2 position;
     Vector2 size;
     Color color; 
@@ -70,16 +83,58 @@ Fleche creer_fleche (Vector2 position) { // Pour créer un objet Ballon
     F.etat= 0; 
     F.cible=0;
     F.dir_x=0;
-    F.dir_x=0;
+    F.dir_y=0;
     F.position= position;
-    F.size={20,20};
+    F.size={80,30};
     F.color= PINK;
     return F;
 }
 
 void dessiner_fleche (Fleche F) { // Pour dessiner un ballon, en fonction position rayon et couleur
     if (F.etat==1){
-    DrawRectangleV(F.position,F.size,F.color);
+        Vector2 F_center = {((F.size.x)/2),((F.size.y)/2)};
+        // std::cout<< F_center.x;
+        // std::cout<< F_center.y;
+        // std::cout<<"  ";
+        Rectangle Rect_F;
+        Rect_F.x=F.position.x;
+        Rect_F.y=F.position.y;
+        Rect_F.height=F.size.y;
+        Rect_F.width=F.size.x;
+        std::cout<<F.dir_x;
+        std::cout<<"  ";
+        std::cout<<F.dir_y;
+        std::cout<<"  ";
+        std::cout<<(F.dir_y/F.dir_x);
+        std::cout<<"  ";
+        double angle = atan((F.dir_y)/(F.dir_x));
+        std::cout<<angle;
+        std::cout<<"  ";
+        double pi = M_PI ; 
+        angle = (angle*180.)/pi ;
+        std::cout<<angle;
+        std::cout<<"  ";
+        
+        // if (F.dir_x<0 && F.dir_y<0){
+        //     angle=angle;
+        // }
+        if (F.dir_x>0 && F.dir_y<0){
+            angle+=90.;
+        }
+        if (F.dir_x>0 && F.dir_y>0){
+            angle+=180.;
+        }
+        if (F.dir_x<0 && F.dir_y>0){
+            angle+=270.;
+        }
+        
+        std::cout<<angle;
+        std::cout<<" | ";
+        
+        DrawRectanglePro(Rect_F,F_center,0,DARKGREEN);
+        DrawRectanglePro(Rect_F,{0,0},0,BLUE);
+        DrawRectanglePro(Rect_F,F_center,angle,F.color);
+        DrawPoly({F.position.x,F.position.y},3,25,angle,DARKBROWN);
     }
 }
 
@@ -96,17 +151,17 @@ Fleche check_coll_b_f(Fleche F, Ballon B, Singe S){
     Rectangle Rect_F;
     Rect_F.x=F.position.x;
     Rect_F.y=F.position.y;
-    Rect_F.height=F.size.x;
-    Rect_F.width=F.size.y;
+    Rect_F.height=F.size.y;
+    Rect_F.width=F.size.x;
     if (F.etat==0){  // on calcule une fois la direction que va suivre le ballon
-        int mouv_x = B.position.x - S_center.x ;
-        int mouv_y = B.position.y - S_center.y ;
+        float mouv_x = B.position.x - S.position.x ;
+        float mouv_y = B.position.y - S.position.y ;
         F.dir_x=mouv_x;
         F.dir_y=mouv_y;
         F.etat=1;
     }
-    F.position.x+=(F.dir_x/10); 
-    F.position.y+=(F.dir_y/10); 
+    F.position.x+=(F.dir_x/80); 
+    F.position.y+=(F.dir_y/80); 
 
     if (CheckCollisionCircleRec(B.position,B.radius,Rect_F)){
         F.etat=0;
@@ -126,30 +181,45 @@ int main(){
       
     Ballon ballon1= creer_ballon ({650,50}, 30);
     Ballon ballon2= creer_ballon ({600,500}, 30);
+    Ballon ballon3= creer_ballon ({450,50}, 30);
+    Ballon ballon4= creer_ballon ({50,50}, 30);
     ballon2.color=BLUE;
+    ballon3.color=DARKBLUE;
 
     Singe singe1 = creer_singe({250,250});
     Fleche fleche1 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
     Fleche fleche2 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
+    Fleche fleche3 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
+    Fleche fleche4 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
 
     bool pause = false; // jeu en pause ou non, avec la barre espace
 
     while (!WindowShouldClose()){
 
         BeginDrawing();
-        ClearBackground(RAYWHITE);
 
         if (IsKeyPressed(KEY_SPACE)) pause = !pause; 
         if (!pause) {
             ballon1.position.x +=ballon1.vitx ;
             ballon1.position.y +=ballon1.vity ;     
             ballon2.position.x +=ballon2.vitx ;
-            ballon2.position.y +=ballon2.vity ;              
-        }   
+            ballon2.position.y +=ballon2.vity ; 
+            ballon3.position.x +=ballon3.vitx ;
+            ballon3.position.y +=ballon3.vity ;     
+            ballon4.position.x +=ballon4.vitx ;
+            ballon4.position.y +=ballon4.vity ;              
+        
+        ClearBackground(RAYWHITE);
+
         if (((ballon1.position.x + ballon1.radius) >= GetScreenWidth()) || (ballon1.position.x <= 0)) ballon1.vitx *= -1;
         if (((ballon2.position.x + ballon2.radius) >= GetScreenWidth()) || (ballon2.position.x <= 0)) ballon2.vitx *= -1;
         if (((ballon1.position.y + ballon1.radius) >= GetScreenHeight()) || (ballon1.position.y <= 0)) ballon1.vity *= -1;
         if (((ballon2.position.y + ballon2.radius) >= GetScreenHeight()) || (ballon2.position.y <= 0)) ballon2.vity *= -1;
+        if (((ballon3.position.x + ballon3.radius) >= GetScreenWidth()) || (ballon3.position.x <= 0)) ballon3.vitx *= -1;
+        if (((ballon4.position.x + ballon4.radius) >= GetScreenWidth()) || (ballon4.position.x <= 0)) ballon4.vitx *= -1;
+        if (((ballon3.position.y + ballon3.radius) >= GetScreenHeight()) || (ballon3.position.y <= 0)) ballon3.vity *= -1;
+        if (((ballon4.position.y + ballon4.radius) >= GetScreenHeight()) || (ballon4.position.y <= 0)) ballon4.vity *= -1;
+        
         
         if (check_coll_s_b(singe1, ballon1)){
             if (fleche1.cible==0){
@@ -158,11 +228,11 @@ int main(){
             if (fleche1.cible==1){
                 ballon1.etat=0; 
                 fleche1.etat=0; 
-            }  
+            } 
             if (fleche1.cible==2){
                 fleche1.etat=0;
-            }
-        }  
+            } 
+        }    
 
         if (check_coll_s_b(singe1, ballon2)){
             if (fleche2.cible==0){
@@ -176,12 +246,43 @@ int main(){
                 fleche2.etat=0;
             } 
         }  
-        
+        if (check_coll_s_b(singe1, ballon3)){
+            if (fleche3.cible==0){
+                fleche3=check_coll_b_f(fleche3,ballon3,singe1);
+            }
+            if (fleche3.cible==1){
+                ballon3.etat=0; 
+                fleche3.etat=0; 
+            } 
+            if (fleche3.cible==2){
+                fleche3.etat=0;
+            } 
+        }    
+
+        if (check_coll_s_b(singe1, ballon4)){
+            if (fleche4.cible==0){
+                fleche4=check_coll_b_f(fleche4,ballon4,singe1);
+            }
+            if (fleche4.cible==1){
+                ballon4.etat=0; 
+                fleche4.etat=0; 
+            } 
+            if (fleche4.cible==2){
+                fleche4.etat=0;
+            } 
+         
+        } 
+
         dessiner_singe(singe1); 
         dessiner_fleche(fleche1); 
         dessiner_fleche(fleche2); 
         dessiner_ballon(ballon1);
         dessiner_ballon(ballon2); 
+        dessiner_fleche(fleche3); 
+        dessiner_fleche(fleche4); 
+        dessiner_ballon(ballon3);
+        dessiner_ballon(ballon4); 
+        }
         EndDrawing();
     }
     CloseWindow(); 
