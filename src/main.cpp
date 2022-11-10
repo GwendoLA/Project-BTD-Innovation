@@ -13,8 +13,8 @@ int main(void)
 {
     // Initialisation fenetre
     InitWindow(screenWidth, screenHeight, " classic game: missile commander");
-    Image im_singe = LoadImage("src/singe3.png");
-    Image im_singe2 = LoadImage("src/singe3.png");
+    Image im_singe = LoadImage("./src/singe3.png");
+    Image im_singe2 = LoadImage("./src/singe3.png");
     ImageResize(&im_singe, 150,150);
     ImageResize(&im_singe2, 100, 100);
     Texture2D texture = LoadTextureFromImage(im_singe);
