@@ -16,7 +16,12 @@ test:
 	@g++ src/test.cpp -o ./${name}.exe -O2 -Wall -Wno-missing-braces -I ${include_path} -L ${lib_path} -lraylib -lopengl32 -lgdi32 -lwinmm
 	@./${name}.exe
 
-%.cpp: %.cpp
+%.cpp: $(wildcard src/*.c)
 	@echo $@
 	@g++ src/$@ -o ./${name}.exe -O2 -Wall -Wno-missing-braces -I ${include_path} -L ${lib_path} -lraylib -lopengl32 -lgdi32 -lwinmm
+	@./${name}.exe
+
+%: $(wildcard *.cpp)
+	@echo $@.cpp
+	@g++ $@.cpp -o ./${name}.exe -O2 -Wall -Wno-missing-braces -I ${include_path} -L ${lib_path} -lraylib -lopengl32 -lgdi32 -lwinmm
 	@./${name}.exe
