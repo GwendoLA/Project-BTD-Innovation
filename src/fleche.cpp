@@ -2,7 +2,8 @@
 #include <iostream>
 #include <stdlib.h> 
 #include "constantes.h"
-#define _USE_MATH_DEFINES
+
+#define M_PI		3.14159265358979323846
 
 typedef struct Fleche
 {                // Structure Fleche
