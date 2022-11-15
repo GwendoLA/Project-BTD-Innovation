@@ -177,7 +177,7 @@ int main(void)
                 //     if (i==j){ 
                 if (ballons[i].etat == 1)
                 {
-                    if (check_coll_s_b(singes[s], ballons[i]) & compteur % 60 == 0)
+                    if (check_coll_s_b(singes[s], ballons[i]) & compteur % 120 == 0)
                     {
                         Fleche fleche1 = creer_fleche({singes[s].position.x + ((singes[s].taille.x) / 2), singes[s].position.y + ((singes[s].taille.y) / 2)});
                         fleches[nb_fleches] = fleche1;
