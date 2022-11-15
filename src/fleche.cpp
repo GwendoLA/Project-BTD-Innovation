@@ -65,6 +65,12 @@ void dessiner_fleche(Fleche &F)
     }
 }
 
+void mouv_fleche(Fleche &F){
+    double distance = sqrt(pow(F.dir_x,2) + pow(F.dir_y,2));
+    F.position.x += (F.dir_x/distance)*20;
+    F.position.y += (F.dir_y/distance)*20;
+}
+
 bool check_coll_s_b(Singe S, Ballon B)
 {
     if (CheckCollisionCircles(S.position, S.range, B.position, B.radius))
@@ -75,15 +81,12 @@ bool check_coll_s_b(Singe S, Ballon B)
     return false;
 }
 
-Fleche check_coll_b_f(Fleche F, Ballon B)
-{
+Fleche check_coll_b_f(Fleche F, Ballon B){
     Rectangle Rect_F;
     Rect_F.x = F.position.x;
     Rect_F.y = F.position.y;
     Rect_F.height = F.size.y;
     Rect_F.width = F.size.x;
-    F.position.x += (F.dir_x / 80);
-    F.position.y += (F.dir_y / 80);
 
     if (CheckCollisionCircleRec(B.position, B.radius, Rect_F))
     {

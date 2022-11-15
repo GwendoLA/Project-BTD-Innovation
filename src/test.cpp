@@ -78,7 +78,6 @@ int main(void)
         // dessiner_bouton(bouton1);
         index++;
         compteur++;
-        std::cout << '\r' << index;
 
         BeginDrawing();
 
@@ -154,8 +153,7 @@ int main(void)
                     }
                 }
 
-                if (fin_round)
-                {
+                if (fin_round){
                     start_round = true;
                     ballons_cree = 0;
                     round += 1;
@@ -189,6 +187,10 @@ int main(void)
                 }
                 ballons[i] = mouv(ballons[i], chemin, nbr_rectangle, pause);
             }
+        }
+
+        for (int i = 0; i<nb_fleches;i++){
+                mouv_fleche(fleches[i]);
         }
 
         for (int s = 0; s < nb_singes; s++)
