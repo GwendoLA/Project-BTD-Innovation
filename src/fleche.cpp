@@ -18,13 +18,13 @@ typedef struct Fleche
     Color color;
 } Fleche;
 
-Fleche creer_fleche(Vector2 position)
-{ // Pour créer un objet Ballon
+Fleche creer_fleche(Vector2 position, Ballon B)
+{
     Fleche F;
-    F.etat = 0;
+    F.etat = 1;
     F.cible = 0;
-    F.dir_x = 0;
-    F.dir_y = 0;
+    F.dir_x = B.position.x - position.x;
+    F.dir_y = B.position.y - position.y;
     F.position = position;
     F.size = {60, 15};
     F.color = PINK;
@@ -44,7 +44,6 @@ void dessiner_fleche(Fleche &F)
         double angle = atan((F.dir_y) / (F.dir_x));
         double pi = M_PI;
         angle = (angle * 180.) / pi;
-      
 
         // if (F.dir_x<0 && F.dir_y<0){
         //     angle=angle;
@@ -63,7 +62,6 @@ void dessiner_fleche(Fleche &F)
         }
 
         DrawRectanglePro(Rect_F, F_center, angle, F.color);
-    
     }
 }
 
@@ -77,22 +75,13 @@ bool check_coll_s_b(Singe S, Ballon B)
     return false;
 }
 
-Fleche check_coll_b_f(Fleche F, Ballon B, Singe S)
+Fleche check_coll_b_f(Fleche F, Ballon B)
 {
-    Vector2 S_center = {S.position.x + ((S.taille.x) / 2), S.position.y + ((S.taille.y) / 2)};
     Rectangle Rect_F;
     Rect_F.x = F.position.x;
     Rect_F.y = F.position.y;
     Rect_F.height = F.size.y;
     Rect_F.width = F.size.x;
-    if (F.etat == 0)
-    { // on calcule une fois la direction que va suivre le ballon
-        float mouv_x = B.position.x - S_center.x;
-        float mouv_y = B.position.y - S_center.y;
-        F.dir_x = mouv_x;
-        F.dir_y = mouv_y;
-        F.etat = 1;
-    }
     F.position.x += (F.dir_x / 80);
     F.position.y += (F.dir_y / 80);
 
