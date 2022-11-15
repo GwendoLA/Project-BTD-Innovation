@@ -25,6 +25,7 @@ void dessiner_singe(Singe singe){
     DrawRectangle(singe.position.x, singe.position.y, singe.taille.x, singe.taille.y, GREEN);
 }
 
+
 typedef struct Fleche { // Structure Fleche
     int etat;  // visible (1) ou non (0)
     int cible;  // cible pas touchée (0), cible touchée (1), a atteint les bords (2)
