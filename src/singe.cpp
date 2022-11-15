@@ -9,16 +9,20 @@ typedef struct Singe{
     Vector2 position;
     Vector2 taille;
     int range;  // zone de detection des ballons
+    int ang;
     Color color;
     Texture texture; 
 } Singe;
 
-Singe creer_singe(Vector2 position){
+
+Singe creer_singe(Vector2 position)
+{
     Singe singe;
     singe.etat = false;
     singe.position = position;
     singe.taille = {100, 100};
-    singe.range = 200;  // choix du range par defaut
+    singe.range = 200; // choix du range par defaut
+    singe.ang = 10;
     singe.color = RED;
     return singe;
 }
@@ -26,6 +30,8 @@ Singe creer_singe(Vector2 position){
 void dessiner_singe(Singe singe, Texture text){
     DrawTexture(text, singe.position.x, singe.position.y, WHITE);
 }
+
+
 
 bool check_collision_singe(Singe singe, Rectangle rectangles[36])
 {
