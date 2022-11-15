@@ -57,6 +57,7 @@ Ballon mouv(Ballon B, Rectangle liste_R[8], int nbr_r, bool pause){
         return B;               
     }
     else {
+        B.etat=0;
         return B;            // le ballon est à la fin du chemin -> fin du round
     }   
 }

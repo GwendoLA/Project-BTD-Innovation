@@ -9,22 +9,25 @@
 #include "constantes.h"
 #include "fleche.cpp"
 
+
 int main(void)
 {
     // Initialisation fenetre
     InitWindow(screenWidth, screenHeight, " classic game: missile commander");
-    Image im_singe = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
-    Image im_singe2 = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
+    Image im_singe = LoadImage("./src/singe3.png");
+    Image im_singe2 = LoadImage("./src/singe3.png");
     ImageResize(&im_singe, 150, 150);
     ImageResize(&im_singe2, 100, 100);
     Texture2D texture = LoadTextureFromImage(im_singe);
     Texture2D textsinge = LoadTextureFromImage(im_singe2);
+    
 
     SetTargetFPS(60);
 
     menu();
     //--------------------------------------------------------------------------------------
     int round = 0;
+    int vies = 100;
     int index = 0;
     int money = MONEY_DEPART;
     int nb_ballons = 0;
@@ -44,6 +47,7 @@ int main(void)
     // On crée henry, le singe de transition
 
     Singe henry = creer_singe({0.0});
+
 
     // création de la liste de stockage des singes
     Singe singes[100] = {};
@@ -69,11 +73,12 @@ int main(void)
     lignes_chemin(10, 2, 11, chemin, false);
     colonnes_chemin(11, 1, 1, chemin, true);
 
-    while (!WindowShouldClose()) // Detect window close button or ESC key
-    {
+    while (!WindowShouldClose())
+    { // Detect window close button or ESC key
         // dessiner_bouton(bouton1);
         index++;
         compteur++;
+        std::cout << '\r' << index;
 
         BeginDrawing();
 
@@ -91,7 +96,7 @@ int main(void)
 
         Rectangle rect_affichage{12.5 * SQUARE_SIZE, 0.25 * SQUARE_SIZE, 3.25 * SQUARE_SIZE, 8.5 * SQUARE_SIZE};
         DrawRectangle(12.5 * SQUARE_SIZE, 0.25 * SQUARE_SIZE, 3.25 * SQUARE_SIZE, 8.5 * SQUARE_SIZE, LIGHTGRAY);
-        DrawText(TextFormat(" ROUND : %4i \n MONEY : %4i \n VIES : %4i", round, money, -index), 1250, 30, 40, MAGENTA);
+        DrawText(TextFormat(" ROUND : %4i \n MONEY : %4i \n VIES : %4i", round, money, vies), 1250, 30, 40, MAGENTA);
         DrawTexture(texture, 13.25 * SQUARE_SIZE, 2.25 * SQUARE_SIZE, WHITE);
         dessiner_bouton(bouton1, 30);
         dessiner_bouton(bouton_round, 25);
@@ -111,6 +116,8 @@ int main(void)
                 ballons_cree += 1;
             }
         }
+
+
 
         // Verif si le bouton est cliqué
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
@@ -174,6 +181,12 @@ int main(void)
                 pause = !pause;
             if (!pause)
             {
+                Ballon B = ballons[i];
+                Vector2 fin = {(SQUARE_SIZE * 10) + SQUARE_SIZE / 2, SQUARE_SIZE / 2};
+                if (B.position.x == fin.x && B.position.y == fin.y && B.etat == 1)
+                {
+                    vies -= 1; // si un ballon arrive à la fin du chemin, on perd 1 vie
+                }
                 ballons[i] = mouv(ballons[i], chemin, nbr_rectangle, pause);
             }
         }
@@ -209,6 +222,7 @@ int main(void)
                             ballons[i].etat = 0;
                             fleches[j].cible = 2;
                             fleches[j].etat = 0;
+                            money += 1; // dès qu'on éclate un ballon, on gagne 1 Money
                         }
                         if (fleches[j].cible == 2)
                         {
@@ -232,9 +246,10 @@ int main(void)
     }
     UnloadTexture(texture); // Unload texture from VRAM
     UnloadImage(im_singe);
-    UnloadTexture(textsinge); // Unload texture from VRAM
+    UnloadTexture(textsinge); // Unload texture from VRAM 
     UnloadImage(im_singe2);
-
+    
+    
     CloseWindow(); // Close window and OpenGL context
 
     return 0;
