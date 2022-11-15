@@ -82,12 +82,12 @@ typedef struct Fleche { // Structure Fleche
     Color color; 
 } Fleche;
 
-Fleche creer_fleche (Vector2 position) { // Pour créer un objet Ballon
+Fleche creer_fleche (Vector2 position,Ballon B) { // Pour créer un objet Ballon
     Fleche F;
-    F.etat= 0; 
-    F.cible=0;
-    F.dir_x=0;
-    F.dir_y=0;
+    F.etat= 1; 
+    F.cible= 0;
+    F.dir_x= B.position.x - position.x ;
+    F.dir_y= B.position.y - position.y ;
     F.position= position;
     F.size={60,15};
     F.color= PINK;
@@ -124,8 +124,8 @@ void dessiner_fleche (Fleche F) { // Pour dessiner un ballon, en fonction positi
 }
 
 
-// check quand le ballon arrive dans le range du singe
-bool check_coll_s_b(Singe S, Ballon B){
+
+bool check_coll_s_b(Singe S, Ballon B){ // check quand le ballon arrive dans le range du singe
     if (CheckCollisionCircles(S.position,S.range,B.position,B.radius)){
         Vector2 S_center = {S.position.x+((S.taille.x)/2),S.position.y+((S.taille.y)/2)};
         return true;
@@ -133,20 +133,12 @@ bool check_coll_s_b(Singe S, Ballon B){
     return false;
 }
 
-Fleche check_coll_b_f(Fleche F, Ballon B, Singe S){
-    Vector2 S_center = {S.position.x+((S.taille.x)/2),S.position.y+((S.taille.y)/2)};
+Fleche check_coll_b_f(Fleche F, Ballon B){
     Rectangle Rect_F;
     Rect_F.x=F.position.x;
     Rect_F.y=F.position.y;
     Rect_F.height=F.size.y;
     Rect_F.width=F.size.x;
-    if (F.etat==0){  // on calcule une fois la direction que va suivre le ballon
-        float mouv_x = B.position.x - S_center.x ;
-        float mouv_y = B.position.y - S_center.y ;
-        F.dir_x=mouv_x;
-        F.dir_y=mouv_y;
-        F.etat=1;
-    }
     F.position.x+=(F.dir_x/80); 
     F.position.y+=(F.dir_y/80); 
 
@@ -181,10 +173,6 @@ int main(){
 
 
     Singe singe1 = creer_singe({250,250});
-    // Fleche fleche1 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
-    // Fleche fleche2 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
-    // Fleche fleche3 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
-    // Fleche fleche4 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
 
     Fleche fleches[100] = {};
     int compteur = 0;
@@ -212,14 +200,14 @@ int main(){
             for (int i = 0; i < 4; i++){
                 if (ballons[i].etat == 1){
                     if (check_coll_s_b(singe1, ballons[i]) & compteur % 60 == 0){
-                        Fleche fleche1 = creer_fleche({singe1.position.x + ((singe1.taille.x) / 2), singe1.position.y + ((singe1.taille.y) / 2)});
+                        Fleche fleche1 = creer_fleche({singe1.position.x + ((singe1.taille.x) / 2), singe1.position.y + ((singe1.taille.y) / 2)},ballons[i]);
                         fleches[nbr_fleches] = fleche1;
                         nbr_fleches++;
                     }
 
                     for (int j = 0; j < nbr_fleches; j++){
                         if (fleches[j].cible == 0){
-                            fleches[j] = check_coll_b_f(fleches[j], ballons[i], singe1);
+                            fleches[j] = check_coll_b_f(fleches[j], ballons[i]);
                         }
                         if (fleches[j].cible == 1){
                             ballons[i].etat = 0;
