@@ -2,21 +2,28 @@
 #include <iostream>
 #include <stdlib.h> 
 
-typedef struct Ballon { // Structure Ballon
+typedef struct Ballon
+{ // Structure Ballon
     int etat;
     Vector2 position;
+    int vitx;
+    int vity;
     int radius;
     int rect;
-    Color color; 
+    Color color;
 } Ballon;
 
-Ballon creer_ballon (Vector2 position, int radius) { // Pour créer un objet Ballon
+
+Ballon creer_ballon(Vector2 position, int radius)
+{ // Pour créer un objet Ballon
     Ballon ballon;
-    ballon.etat= 1;
-    ballon.position= position;
-    ballon.radius= radius;
-    ballon.rect=1;
-    ballon.color= RED;
+    ballon.etat = 1;
+    ballon.position = position;
+    ballon.vitx = 2; // choix de la vitesse en x du ballon, que pour cet exemple
+    ballon.vity = 2; // choix de la vitesse en y du ballon, que pour cet exemple
+    ballon.radius = radius;
+    ballon.rect = 1;
+    ballon.color = RED;
     return ballon;
 }
 
