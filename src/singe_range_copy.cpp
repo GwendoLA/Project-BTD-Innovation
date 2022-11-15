@@ -162,8 +162,8 @@ Fleche check_coll_b_f(Fleche F, Ballon B, Singe S){
         F.dir_y=mouv_y;
         F.etat=1;
     }
-    F.position.x+=(F.dir_x/100); 
-    F.position.y+=(F.dir_y/100); 
+    F.position.x+=(F.dir_x/80); 
+    F.position.y+=(F.dir_y/80); 
 
     if (CheckCollisionCircleRec(B.position,B.radius,Rect_F)){
         F.etat=0;
@@ -219,6 +219,28 @@ int main(){
             if (((liste_B[i].position.y + liste_B[i].radius) >= GetScreenHeight()) || (liste_B[i].position.y <= 0)) liste_B[i].vity *= -1;
         }
         
+        
+        // for (int i=0; i<=3;i++){
+        //     int c =0;
+        //     if (check_coll_s_b(singe1, liste_B[i])){    
+        //         if (c==0){ // on le fait qu'une fois
+        //             Fleche fleche = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
+        //             c=1;
+        //         } 
+        //         if (fleche.cible==0){
+        //             fleche=check_coll_b_f(fleche,liste_B[i],singe1);
+        //         }
+        //         if (fleche.cible==1){
+        //             fleche.etat=0; 
+        //             fleche.etat=0; 
+        //         } 
+        //         if (fleche.cible==2){
+        //             fleche.etat=0;
+        //         } 
+        //     }     
+        // }
+
+
         for (int i=0; i<=3;i++){
             if (check_coll_s_b(singe1, liste_B[i])){
                 if (liste_F[i].cible==0){
