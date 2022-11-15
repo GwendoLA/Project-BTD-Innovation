@@ -31,8 +31,12 @@ Ballon creer_ballon (Vector2 position, int radius) { // Pour créer un objet Bal
 void dessiner_ballon (Ballon ballon) { // Pour dessiner un ballon, en fonction position rayon et couleur
     if (ballon.etat==1){
     DrawCircleV(ballon.position,ballon.radius,ballon.color);
-    // DrawRectangleV(ballon.position,{40,40},ballon.color);
     }
+}
+
+void bouge_ballon(Ballon &ballon){
+    ballon.position.x += ballon.vitx;
+    ballon.position.y += ballon.vity;
 }
 
 typedef struct Singe{
@@ -93,27 +97,14 @@ Fleche creer_fleche (Vector2 position) { // Pour créer un objet Ballon
 void dessiner_fleche (Fleche F) { // Pour dessiner un ballon, en fonction position rayon et couleur
     if (F.etat==1){
         Vector2 F_center = {((F.size.x)/2),((F.size.y)/2)};
-        // std::cout<< F_center.x;
-        // std::cout<< F_center.y;
-        // std::cout<<"  ";
         Rectangle Rect_F;
         Rect_F.x=F.position.x;
         Rect_F.y=F.position.y;
         Rect_F.height=F.size.y;
         Rect_F.width=F.size.x;
-        // std::cout<<F.dir_x;
-        // std::cout<<"  ";
-        // std::cout<<F.dir_y;
-        // std::cout<<"  ";
-        // std::cout<<(F.dir_y/F.dir_x);
-        // std::cout<<"  ";
         double angle = atan((F.dir_y)/(F.dir_x));
-        // std::cout<<angle;
-        // std::cout<<"  ";
         double pi = M_PI ; 
         angle = (angle*180.)/pi ;
-        // std::cout<<angle;
-        // std::cout<<"  ";
         
         // if (F.dir_x<0 && F.dir_y<0){
         //     angle=angle;
@@ -128,13 +119,7 @@ void dessiner_fleche (Fleche F) { // Pour dessiner un ballon, en fonction positi
             angle+=180.;
         }
         
-        // std::cout<<angle;
-        // std::cout<<" | ";
-        
-        // DrawRectanglePro(Rect_F,F_center,0,DARKGREEN);
-        // DrawRectanglePro(Rect_F,{0,0},0,BLUE);
         DrawRectanglePro(Rect_F,F_center,angle,F.color);
-        // DrawPoly({F.position.x,F.position.y},3,25,angle,DARKBROWN);
     }
 }
 
@@ -188,135 +173,76 @@ int main(){
     ballon2.color=BLUE;
     ballon3.color=DARKBLUE;
 
-    Ballon liste_B[4] = {ballon1,ballon2,ballon3,ballon4};
+    Ballon ballons[100] = {};
+    ballons[0] = ballon1;
+    ballons[1] = ballon2;
+    ballons[2] = ballon3;
+    ballons[3] = ballon4;
 
 
     Singe singe1 = creer_singe({250,250});
-    Fleche fleche1 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
-    Fleche fleche2 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
-    Fleche fleche3 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
-    Fleche fleche4 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
+    // Fleche fleche1 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
+    // Fleche fleche2 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
+    // Fleche fleche3 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
+    // Fleche fleche4 = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
 
-    Fleche liste_F[4]= {fleche1,fleche2,fleche3,fleche4};
+    Fleche fleches[100] = {};
+    int compteur = 0;
 
     bool pause = false; // jeu en pause ou non, avec la barre espace
+    int nbr_fleches = 0;
 
     while (!WindowShouldClose()){
 
         BeginDrawing();
+        compteur++;
 
         if (IsKeyPressed(KEY_SPACE)) pause = !pause; 
         if (!pause) {
-            for (int i=0; i<=3;i++){
-                liste_B[i].position.x +=liste_B[i].vitx ;
-                liste_B[i].position.y +=liste_B[i].vity ;     
-            }         
-        
-        ClearBackground(RAYWHITE);
+            for (int i = 0; i < 4; i++){
+                bouge_ballon(ballons[i]);
+                if (((ballons[i].position.x + ballons[i].radius) >= GetScreenWidth()) || (ballons[i].position.x <= 0))
+                    ballons[i].vitx *= -1;
+                if (((ballons[i].position.y + ballons[i].radius) >= GetScreenHeight()) || (ballons[i].position.y <= 0))
+                    ballons[i].vity *= -1;
+            }
 
-        for (int i=0; i<=3;i++){
-            if (((liste_B[i].position.x + liste_B[i].radius) >= GetScreenWidth()) || (liste_B[i].position.x <= 0)) liste_B[i].vitx *= -1;
-            if (((liste_B[i].position.y + liste_B[i].radius) >= GetScreenHeight()) || (liste_B[i].position.y <= 0)) liste_B[i].vity *= -1;
-        }
-        
-        
-        // for (int i=0; i<=3;i++){
-        //     int c =0;
-        //     if (check_coll_s_b(singe1, liste_B[i])){    
-        //         if (c==0){ // on le fait qu'une fois
-        //             Fleche fleche = creer_fleche({singe1.position.x+((singe1.taille.x)/2),singe1.position.y+((singe1.taille.y)/2)});
-        //             c=1;
-        //         } 
-        //         if (fleche.cible==0){
-        //             fleche=check_coll_b_f(fleche,liste_B[i],singe1);
-        //         }
-        //         if (fleche.cible==1){
-        //             fleche.etat=0; 
-        //             fleche.etat=0; 
-        //         } 
-        //         if (fleche.cible==2){
-        //             fleche.etat=0;
-        //         } 
-        //     }     
-        // }
+            ClearBackground(RAYWHITE);
 
+            for (int i = 0; i < 4; i++){
+                if (ballons[i].etat == 1){
+                    if (check_coll_s_b(singe1, ballons[i]) & compteur % 60 == 0){
+                        Fleche fleche1 = creer_fleche({singe1.position.x + ((singe1.taille.x) / 2), singe1.position.y + ((singe1.taille.y) / 2)});
+                        fleches[nbr_fleches] = fleche1;
+                        nbr_fleches++;
+                    }
 
-        for (int i=0; i<=3;i++){
-            if (check_coll_s_b(singe1, liste_B[i])){
-                if (liste_F[i].cible==0){
-                    liste_F[i]=check_coll_b_f(liste_F[i],liste_B[i],singe1);
+                    for (int j = 0; j < nbr_fleches; j++){
+                        if (fleches[j].cible == 0){
+                            fleches[j] = check_coll_b_f(fleches[j], ballons[i], singe1);
+                        }
+                        if (fleches[j].cible == 1){
+                            ballons[i].etat = 0;
+                            fleches[j].cible = 2;
+                            fleches[j].etat = 0;
+                        }
+                        if (fleches[j].cible == 2){
+                            fleches[j].etat = 0;
+                        }
+                    }
                 }
-                if (liste_F[i].cible==1){
-                    liste_B[i].etat=0; 
-                    liste_F[i].etat=0; 
-                } 
-                if (liste_F[i].cible==2){
-                    liste_F[i].etat=0;
-                } 
-            }    
-        }
+            }
 
-        // if (check_coll_s_b(singe1, liste_B[0])){
-        //     if (liste_F[0].cible==0){
-        //         liste_F[0]=check_coll_b_f(liste_F[0],liste_B[0],singe1);
-        //     }
-        //     if (liste_F[0].cible==1){
-        //         liste_B[0].etat=0; 
-        //         liste_F[0].etat=0; 
-        //     } 
-        //     if (liste_F[0].cible==2){
-        //         liste_F[0].etat=0;
-        //     } 
-        // }    
+            dessiner_singe(singe1);
 
-        // if (check_coll_s_b(singe1, liste_B[1])){
-        //     if (liste_F[1].cible==0){
-        //         liste_F[1]=check_coll_b_f(liste_F[1],liste_B[1],singe1);
-        //     }
-        //     if (liste_F[1].cible==1){
-        //         liste_B[1].etat=0; 
-        //         liste_F[1].etat=0; 
-        //     } 
-        //     if (liste_F[1].cible==2){
-        //         liste_F[1].etat=0;
-        //     } 
-        // }  
-        // if (check_coll_s_b(singe1, ballon3)){
-        //     if (fleche3.cible==0){
-        //         fleche3=check_coll_b_f(fleche3,ballon3,singe1);
-        //     }
-        //     if (fleche3.cible==1){
-        //         ballon3.etat=0; 
-        //         fleche3.etat=0; 
-        //     } 
-        //     if (fleche3.cible==2){
-        //         fleche3.etat=0;
-        //     } 
-        // }    
+            for (int i = 0; i < 4; i++){
+                dessiner_ballon(ballons[i]);
+            }
 
-        // if (check_coll_s_b(singe1, ballon4)){
-        //     if (fleche4.cible==0){
-        //         fleche4=check_coll_b_f(fleche4,ballon4,singe1);
-        //     }
-        //     if (fleche4.cible==1){
-        //         ballon4.etat=0; 
-        //         fleche4.etat=0; 
-        //     } 
-        //     if (fleche4.cible==2){
-        //         fleche4.etat=0;
-        //     } 
-         
-        // } 
-
-        dessiner_singe(singe1); 
-        for (int i=0; i<=3;i++){
-            dessiner_fleche(liste_F[i]); 
-            dessiner_ballon(liste_B[i]);
-        }
-        // dessiner_fleche(fleche3); 
-        // dessiner_fleche(fleche4); 
-        // dessiner_ballon(ballon3);
-        // dessiner_ballon(ballon4); 
+            for (int i = 0; i < nbr_fleches; i++){
+                dessiner_fleche(fleches[i]);
+            }     
+                    
         }
         EndDrawing();
     }
