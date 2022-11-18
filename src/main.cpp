@@ -79,9 +79,9 @@ int main(void)
 
         for (int s = 0; s < nb_singes; s++)
         {
-            if (!singes[s].compteur <= 0)
+            if (!singes[s].fatigue <= 0)
             {
-                singes[s].compteur -= 1;
+                singes[s].fatigue -= 1;
             }
         }
 
@@ -214,7 +214,7 @@ int main(void)
                 //     if (i==j){
                 if (ballons[i].etat == 1)
                 {
-                    if ((check_coll_s_b(singes[s], ballons[i])) && singes[s].compteur == 0)
+                    if ((check_coll_s_b(singes[s], ballons[i])) && singes[s].fatigue == 0)
                     {
                         if (!singe_tir)
                         {
@@ -222,7 +222,7 @@ int main(void)
                             singe_tir = true;
                             fleches[nb_fleches] = fleche1;
                             nb_fleches++;
-                            singes[s].compteur += 120;
+                            singes[s].fatigue += 120;
                         }
                     }
 
