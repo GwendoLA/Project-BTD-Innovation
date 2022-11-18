@@ -23,7 +23,7 @@ int main(void)
     SetTargetFPS(60);
 
     menu();
-    //-------------------------------------------------------------------------------------- 
+    //--------------------------------------------------------------------------------------
     int round = 0;
     int vies = 40;
     int index = 0;
@@ -133,14 +133,11 @@ int main(void)
             }
 
             else if (henry.etat == true)
-            {   bool coll_singe= false;
+            { 
+                
+                henry.position = GetMousePosition();
                 henry.etat = false;
-                for (Singe singe : singes){
-                        if (check_collision_singe2(henry, singe)){
-                            coll_singe= true;
-                        }
-                    }
-                if (check_collision_singe(henry, chemin) == false && CheckCollisionPointRec({GetMousePosition().x+50,GetMousePosition().y+50} , rect_affichage) == false & coll_singe==false )
+                if (check_collision_singe(henry, chemin) == false && CheckCollisionPointRec(GetMousePosition(), rect_affichage) == false )
                 {
                     Singe singe1 = henry;
                     singe1.etat = true;
@@ -174,8 +171,7 @@ int main(void)
 
         if (henry.etat == true)
         {
-            Vector2 milieu_singe= {GetMousePosition().x-50,GetMousePosition().y-50};
-            henry.position = milieu_singe;
+            henry.position = GetMousePosition();
             dessiner_singe(henry, textsinge);
         }
 

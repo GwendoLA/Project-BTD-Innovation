@@ -20,7 +20,7 @@ Singe creer_singe(Vector2 position){
     Singe singe;
     singe.etat = false;
     singe.position = position;
-    singe.taille = {100, 100};
+    singe.taille = {80, 80};
     singe.range = 200; // choix du range par defaut
     singe.ang = 10;
     singe.compteur = 0;
@@ -36,10 +36,10 @@ void dessiner_singe(Singe singe, Texture text){
 bool check_collision_singe(Singe singe, Rectangle rectangles[36])
 {
     Rectangle s;
-    s.x = singe.position.x;
-    s.y = singe.position.y;
-    s.height = SQUARE_SIZE;
-    s.width = SQUARE_SIZE;
+    s.x = singe.position.x+10;
+    s.y = singe.position.y+10;
+    s.height = singe.taille.x;
+    s.width = singe.taille.y;
     for (int i = 0; i < 36; i++)
     {
         if (CheckCollisionRecs(s, rectangles[i]))
@@ -48,4 +48,21 @@ bool check_collision_singe(Singe singe, Rectangle rectangles[36])
         }
     }
     return false;
+}
+
+bool check_collision_singe2(Singe singe1, Singe singe2){
+    Rectangle s1;
+    s1.x=singe1.position.x;
+    s1.y=singe1.position.y;
+    s1.height= singe1.taille.x;
+    s1.width= singe1.taille.y;
+
+    Rectangle s2;
+    s2.x=singe2.position.x;
+    s2.y=singe2.position.y;
+    s2.height= singe2.taille.x;
+    s2.width= singe2.taille.y;
+
+    
+    return CheckCollisionRecs(s1, s2);
 }
