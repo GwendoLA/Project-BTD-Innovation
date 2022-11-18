@@ -72,9 +72,10 @@ void mouv_fleche(Fleche &F){
     F.position.y += (F.dir_y/distance)*20;
 }
 
-bool check_coll_s_b(Singe S, Ballon B)
-{
-    if (CheckCollisionCircles(S.position, S.range, B.position, B.radius))
+bool check_coll_s_b(Singe S, Ballon B){
+    Vector2 S_center = {(S.position.x+(S.taille.x/ 2)), (S.position.y+(S.taille.y/ 2))};
+
+    if (CheckCollisionCircles(S_center, S.range, B.position, B.radius))
     {
         Vector2 S_center = {S.position.x + ((S.taille.x) / 2), S.position.y + ((S.taille.y) / 2)};
         return true;
