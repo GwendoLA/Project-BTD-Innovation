@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include "constantes.h"
 
-
 #define M_PI 3.14159265358979323846
 
 typedef struct Fleche
@@ -66,14 +65,16 @@ void dessiner_fleche(Fleche &F)
     }
 }
 
-void mouv_fleche(Fleche &F){
-    double distance = sqrt(pow(F.dir_x,2) + pow(F.dir_y,2));
-    F.position.x += (F.dir_x/distance)*20;
-    F.position.y += (F.dir_y/distance)*20;
+void mouv_fleche(Fleche &F)
+{
+    double distance = sqrt(pow(F.dir_x, 2) + pow(F.dir_y, 2));
+    F.position.x += (F.dir_x / distance) * 20;
+    F.position.y += (F.dir_y / distance) * 20;
 }
 
-bool check_coll_s_b(Singe S, Ballon B){
-    Vector2 S_center = {(S.position.x+(S.taille.x/ 2)), (S.position.y+(S.taille.y/ 2))};
+bool check_coll_s_b(Singe S, Ballon B)
+{
+    Vector2 S_center = {(S.position.x + (S.taille.x / 2)), (S.position.y + (S.taille.y / 2))};
 
     if (CheckCollisionCircles(S_center, S.range, B.position, B.radius))
     {
@@ -83,18 +84,64 @@ bool check_coll_s_b(Singe S, Ballon B){
     return false;
 }
 
-Fleche check_coll_b_f(Fleche F, Ballon B){
-    Rectangle Rect_F;
-    Rect_F.x = F.position.x;
-    Rect_F.y = F.position.y;
-    Rect_F.height = F.size.y;
-    Rect_F.width = F.size.x;
-
-    if (CheckCollisionCircleRec(B.position, B.radius, Rect_F))
+float signaz(float &num)
+{
+    if (num > 0.)
     {
-        F.etat = 0;
-        F.cible = 1;
+        return 1.;
     }
+    if (num == 0.)
+    {
+        return 0.;
+    }
+    if (num < 0.)
+    {
+        return -1.;
+    }
+    return 0;
+}
+
+Fleche check_coll_b_f(Fleche F, Ballon B)
+{
+
+    double angle = atan((F.dir_y) / (F.dir_x));
+    Vector2 F_center = {F.size.x / 2, F.size.y / 2};
+    Vector2 points[4] = {
+        {-F_center.x, -F_center.y},
+        {F_center.x, -F_center.y},
+        {-F_center.x, F_center.y},
+        {F_center.x, F_center.y}};
+    /// on calcule uniquement une valeur des distances car elles sont théoriquement toutes les mêmes.
+    // float distances[4] = {};
+    // for (int i = 0; i < 4; i++)
+    // {
+    //     distances[i] = sqrt(pow(points[i].x, 2) + pow(points[i].y, 2));
+    // }
+    float distances = sqrt(pow(F_center.x, 2) + pow(F_center.y, 2));
+    Vector2 points_arrive[4] = {};
+    for (int i = 0; i < 4; i++)
+    {
+        float current_angle = abs(atan(points[i].y / points[i].x));
+        points_arrive[i] = {(float)(F.position.x + signaz(points[i].x) * distances * cos(signaz(points[i].x) * signaz(points[i].y) * angle + current_angle)),
+                            (float)(F.position.y + signaz(points[i].y) * distances * sin(signaz(points[i].x) * signaz(points[i].y) * angle + current_angle))};
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        // DrawCircle(points_arrive[i].x, points_arrive[i].y, 5, VIOLET);
+        if (CheckCollisionPointCircle(points_arrive[i], B.position, B.radius))
+        {
+            F.etat = 0;
+            F.cible = 1;
+        }
+    }
+
+    // DrawRectangleRec(Rect_F, PURPLE);
+
+    // if (CheckCollisionCircleRec(B.position, B.radius, Rect_F))
+    // {
+    //     F.etat = 0;
+    //     F.cible = 1;
+    // }
     if ((F.position.x <= 0) || (F.position.y <= 0) || (F.position.x >= GetScreenWidth()) || (F.position.y >= GetScreenHeight()))
     {
         F.etat = 0;

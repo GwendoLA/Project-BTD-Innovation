@@ -15,8 +15,8 @@ int main(void)
     InitWindow(screenWidth, screenHeight, " classic game: missile commander");
     Image im_singe = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
     Image im_singe_bis = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
-    Image im_singe2= LoadImage("C:/Users/maeva/OneDrive/Images/singe2.png");
-    Image im_singe2_bis= LoadImage("C:/Users/maeva/OneDrive/Images/singe2.png");
+    Image im_singe2 = LoadImage("C:/Users/maeva/OneDrive/Images/singe2.png");
+    Image im_singe2_bis = LoadImage("C:/Users/maeva/OneDrive/Images/singe2.png");
     ImageResize(&im_singe, 150, 150);
     ImageResize(&im_singe_bis, 100, 100);
     ImageResize(&im_singe2, 150, 150);
@@ -29,7 +29,7 @@ int main(void)
     SetTargetFPS(60);
 
     menu();
-    //-------------------------------------------------------------------------------------- 
+    //--------------------------------------------------------------------------------------
     int round = 0;
     int vies = 40;
     int index = 0;
@@ -39,11 +39,11 @@ int main(void)
     int compteur = 0;
     bool start_round = false;
     int ballons_vivants = 0;
-    bool victoire= false;
-    bool defaite= false;
+    bool victoire = false;
+    bool defaite = false;
 
     // création de la liste de stockage des ballons
-    Ballon ballons[1000] = {};
+    Ballon ballons[10000] = {};
 
     // liste chemin
     Rectangle chemin[36] = {};
@@ -54,16 +54,15 @@ int main(void)
 
     // On crée henry, le singe de transition
 
-    Singe henry = creer_singe({0.0},120);
-    Singe marc = creer_singe({0.0},60);
-
+    Singe henry = creer_singe({0.0}, 120);
+    Singe marc = creer_singe({0.0}, 60);
 
     // création de la liste de stockage des singes
-    Singe singes[100] = {};
+    Singe singes[1000] = {};
     int nb_singes = 0;
 
     // création de la liste de stockage des fleches
-    Fleche fleches[1000] = {};
+    Fleche fleches[10000] = {};
     int nb_fleches = 0;
 
     bool pause = false; // jeu en pause ou non, avec la barre espace
@@ -82,7 +81,7 @@ int main(void)
     lignes_chemin(10, 2, 11, chemin, false);
     colonnes_chemin(11, 1, 1, chemin, true);
 
-    while (!WindowShouldClose() && victoire== false && defaite== false)
+    while (!WindowShouldClose() && victoire == false && defaite == false)
     { // Detect window close button or ESC key
         // dessiner_bouton(bouton1);
         index++;
@@ -98,21 +97,21 @@ int main(void)
 
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+        ClearBackground(COLOR_BACKGROUND);
 
-        for (int i = 0; i < screenWidth / SQUARE_SIZE + 1; i++)
-        {
-            DrawLineV({(float)(SQUARE_SIZE * i), 0.0}, {(float)(SQUARE_SIZE * i), (float)(screenHeight)}, LIGHTGRAY);
-        }
+        // for (int i = 0; i < screenWidth / SQUARE_SIZE + 1; i++)
+        // {
+        //     DrawLineV({(float)(SQUARE_SIZE * i), 0.0}, {(float)(SQUARE_SIZE * i), (float)(screenHeight)}, LIGHTGRAY);
+        // }
 
-        for (int i = 0; i < screenHeight / SQUARE_SIZE + 1; i++)
-        {
-            DrawLineV({0.0, (float)(SQUARE_SIZE * i)}, {(float)(screenWidth), (float)(SQUARE_SIZE * i)}, LIGHTGRAY);
-        }
+        // for (int i = 0; i < screenHeight / SQUARE_SIZE + 1; i++)
+        // {
+        //     DrawLineV({0.0, (float)(SQUARE_SIZE * i)}, {(float)(screenWidth), (float)(SQUARE_SIZE * i)}, LIGHTGRAY);
+        // }
 
         Rectangle rect_affichage{12.5 * SQUARE_SIZE, 0.25 * SQUARE_SIZE, 3.25 * SQUARE_SIZE, 8.5 * SQUARE_SIZE};
-        DrawRectangle(12.5 * SQUARE_SIZE, 0.25 * SQUARE_SIZE, 3.25 * SQUARE_SIZE, 8.5 * SQUARE_SIZE, LIGHTGRAY);
-        DrawText(TextFormat(" ROUND : %4i \n MONEY : %4i \n VIES : %4i", round, money, vies), 1250, 30, 40, MAGENTA);
+        DrawRectangle(12.5 * SQUARE_SIZE, 0.2 * SQUARE_SIZE, 3.25 * SQUARE_SIZE, 8.55 * SQUARE_SIZE, {185, 206, 29, 255});
+        DrawText(TextFormat(" ROUND : %4i \n MONEY : %4i \n VIES : %4i", round, money, vies), 1250, 30, 40, COLOR_TEXT);
         DrawTexture(texture, 13.25 * SQUARE_SIZE, 2.25 * SQUARE_SIZE, WHITE);
         DrawTexture(texture2, 13.25 * SQUARE_SIZE, 5 * SQUARE_SIZE, WHITE);
         dessiner_bouton(bouton1, 30);
@@ -122,38 +121,48 @@ int main(void)
         // DrawRectangle(0, 100, 300, 80, DARKGRAY);  // gauche, haut, longueur, largeur
         for (int i = 0; i < 36; i++)
         {
-            DrawRectangleRec(chemin[i], DARKGRAY);
+            DrawRectangleRec(chemin[i], {189, 196, 134, 255});
+            DrawRectangleRec({chemin[i].x + 10, chemin[i].y + 10, chemin[i].width - 20, chemin[i].height - 20}, {189, 196, 134, 255});
         }
 
         if (start_round)
         {
-            if (compteur % (60-round) == 0 & ballons_cree < nb_ballons)
+            if (compteur % (60 - round) == 0 & ballons_cree < nb_ballons)
             {
-                Ballon ballon2 = creer_ballon({50, 350}, 30);
-                ballons[ballons_cree] = ballon2;
-                ballons_cree += 1;
+                for (int i = 0; i < (round / 5) + 1; i++)
+                {
+                    if (ballons_cree < nb_ballons)
+                    {
+                        Ballon ballon2 = creer_ballon({50, 350}, 30);
+                        ballons[ballons_cree] = ballon2;
+                        ballons_cree += 1;
+                    }
+                }
             }
         }
-
 
         // Verif si le bouton est cliqué
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
-            if (detect_click(bouton1) && money-250>=0)
+            if (detect_click(bouton1) && money - 250 >= 0)
             {
-                henry = creer_singe(GetMousePosition(),120);
+                henry = creer_singe(GetMousePosition(), 120);
                 henry.etat = true;
             }
 
             else if (henry.etat == true)
-            {   bool coll_singe= false;
+            {
+                bool coll_singe = false;
                 henry.etat = false;
-                for (Singe singe : singes){
-                        if (check_collision_singe2(henry, singe)){
-                            coll_singe= true;
-                        }
+                for (Singe singe : singes)
+                {
+                    if (check_collision_singe2(henry, singe))
+                    {
+                        coll_singe = true;
+                        break;
                     }
-                if (check_collision_singe(henry, chemin) == false && CheckCollisionPointRec({GetMousePosition().x+50,GetMousePosition().y+50} , rect_affichage) == false & coll_singe==false )
+                }
+                if (check_collision_singe(henry, chemin) == false && CheckCollisionPointRec({GetMousePosition().x + 50, GetMousePosition().y + 50}, rect_affichage) == false & coll_singe == false)
                 {
                     Singe singe1 = henry;
                     singe1.etat = true;
@@ -163,21 +172,25 @@ int main(void)
                 }
             }
 
-            if (detect_click(bouton2) && money-400>=0)
+            if (detect_click(bouton2) && money - 400 >= 0)
             {
-                marc = creer_singe(GetMousePosition(),60);
+                marc = creer_singe(GetMousePosition(), 60);
                 marc.etat = true;
             }
 
             else if (marc.etat == true)
-            {   bool coll_singe= false;
+            {
+                bool coll_singe = false;
                 marc.etat = false;
-                for (Singe singe : singes){
-                        if (check_collision_singe2(marc, singe)){
-                            coll_singe= true;
-                        }
+                for (Singe singe : singes)
+                {
+                    if (check_collision_singe2(marc, singe))
+                    {
+                        coll_singe = true;
+                        break;
                     }
-                if (check_collision_singe(marc, chemin) == false && CheckCollisionPointRec({GetMousePosition().x+50,GetMousePosition().y+50} , rect_affichage) == false & coll_singe==false )
+                }
+                if (check_collision_singe(marc, chemin) == false && CheckCollisionPointRec({GetMousePosition().x + 50, GetMousePosition().y + 50}, rect_affichage) == false & coll_singe == false)
                 {
                     Singe singe1 = marc;
                     singe1.etat = true;
@@ -187,41 +200,62 @@ int main(void)
                 }
             }
 
-
-
             if (detect_click(bouton_round))
-            {   bool fin_round = true;
+            {
+                bool fin_round = true;
                 for (Ballon ballon : ballons)
                 {
 
                     if (ballon.etat == 1)
                     {
                         fin_round = false;
+                        break;
                     }
                 }
 
-                if (fin_round)
+                if (fin_round & ballons_cree == nb_ballons)
                 {
                     start_round = true;
                     ballons_cree = 0;
                     round += 1;
                     nb_ballons += 15;
-                    ballons_vivants= nb_ballons;
-
+                    ballons_vivants = nb_ballons;
+                    // for (int j = 0; j < nb_fleches; j++)
+                    // {
+                    //     if (fleches[j].cible == 1)
+                    //     {
+                    //         fleches[j].cible = 2;
+                    //         fleches[j].etat = 0;
+                    //         money += 1; // dès qu'on éclate un ballon, on gagne 1 Money
+                    //         ballons_vivants -= 1;
+                    //         if (ballons_vivants == 0)
+                    //         {
+                    //             money += 100 - (round - 1);
+                    //             if (round == 50)
+                    //             {
+                    //                 victoire = true;
+                    //             }
+                    //         }
+                    //     }
+                    //     if (fleches[j].cible == 2)
+                    //     {
+                    //         fleches[j].etat = 0;
+                    //     }
+                    // }
+                    nb_fleches = 0;
                 }
             }
         }
-
         if (henry.etat == true)
         {
-            Vector2 milieu_singe= {GetMousePosition().x-50,GetMousePosition().y-50};
+            Vector2 milieu_singe = {GetMousePosition().x - 50, GetMousePosition().y - 50};
             henry.position = milieu_singe;
             dessiner_singe(henry, textsinge);
         }
 
         if (marc.etat == true)
         {
-            Vector2 milieu_singe= {GetMousePosition().x-50,GetMousePosition().y-50};
+            Vector2 milieu_singe = {GetMousePosition().x - 50, GetMousePosition().y - 50};
             marc.position = milieu_singe;
             dessiner_singe(marc, textsinge2);
         }
@@ -233,21 +267,22 @@ int main(void)
         for (int i = 0; i < ballons_cree; i++)
         {
             dessiner_ballon(ballons[i]);
-            if (IsKeyPressed(KEY_SPACE))
-                pause = !pause;
-            if (!pause)
+            // if (IsKeyPressed(KEY_SPACE))
+            //     pause = !pause;
+            // if (!pause)
+            // {
+            Ballon B = ballons[i];
+            Vector2 fin = {(SQUARE_SIZE * 10) + SQUARE_SIZE / 2, SQUARE_SIZE / 2};
+            if (B.position.x == fin.x && B.position.y == fin.y && B.etat == 1)
             {
-                Ballon B = ballons[i];
-                Vector2 fin = {(SQUARE_SIZE * 10) + SQUARE_SIZE / 2, SQUARE_SIZE / 2};
-                if (B.position.x == fin.x && B.position.y == fin.y && B.etat == 1)
+                vies -= 1; // si un ballon arrive à la fin du chemin, on perd 1 vie
+                if (vies == 0)
                 {
-                    vies -= 1; // si un ballon arrive à la fin du chemin, on perd 1 vie
-                    if (vies==0){
-                        defaite= true;
-                    }
+                    defaite = true;
                 }
-                ballons[i] = mouv(ballons[i], chemin, nbr_rectangle, pause);
             }
+            ballons[i] = mouv(ballons[i], chemin, nbr_rectangle, pause);
+            // }
         }
 
         for (int i = 0; i < nb_fleches; i++)
@@ -278,23 +313,30 @@ int main(void)
 
                     for (int j = 0; j < nb_fleches; j++)
                     {
-                        if (fleches[j].cible == 0)
+                        if (fleches[j].cible == 0 && fleches[j].etat != 0)
                         {
                             fleches[j] = check_coll_b_f(fleches[j], ballons[i]);
                         }
-                        if (fleches[j].cible == 1)
+                        if (fleches[j].cible == 1 && ballons[i].etat == 1)
                         {
                             ballons[i].etat = 0;
                             fleches[j].cible = 2;
                             fleches[j].etat = 0;
                             money += 1; // dès qu'on éclate un ballon, on gagne 1 Money
                             ballons_vivants -= 1;
-                            if (ballons_vivants==0){
-                                money+= 100-(round-1);
-                                if (round==50){
-                                    victoire= true;
+                            if (ballons_vivants <= 0)
+                            {
+                                money += 100 - (round - 1);
+                                if (round == 50)
+                                {
+                                    victoire = true;
                                 }
                             }
+                        }
+                        if (fleches[j].cible == 1 && ballons[i].etat == 1)
+                        {
+                            fleches[j].etat = 1;
+                            fleches[j].cible = 0;
                         }
                         if (fleches[j].cible == 2)
                         {
@@ -307,14 +349,15 @@ int main(void)
 
         for (int i = 0; i < nb_singes; i++)
         {
-            if (singes[i].fatigue_tir==120){
-                 dessiner_singe(singes[i], textsinge);
+            if (singes[i].fatigue_tir == 120)
+            {
+                dessiner_singe(singes[i], textsinge);
             }
 
-            if (singes[i].fatigue_tir==60){
-                 dessiner_singe(singes[i], textsinge2);
+            if (singes[i].fatigue_tir == 60)
+            {
+                dessiner_singe(singes[i], textsinge2);
             }
-           
         }
 
         for (int i = 0; i < nb_fleches; i++)
@@ -333,17 +376,17 @@ int main(void)
     UnloadTexture(textsinge2); // Unload texture from VRAM
     UnloadImage(im_singe2_bis);
 
-    if (victoire){
-        // a faire 
+    if (victoire)
+    {
+        // a faire
     }
 
-    if (defaite){
-        // a faire 
+    if (defaite)
+    {
+        // a faire
     }
-
 
     CloseWindow(); // Close window and OpenGL context
 
     return 0;
 }
-
