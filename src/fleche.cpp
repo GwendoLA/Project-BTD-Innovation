@@ -98,7 +98,7 @@ void dessiner_fleche(Fleche &F)
 
 
         // DrawRectanglePro(Rect_F, F_center, angle, F.color);
-        std::cout << angle << " ";
+        // std::cout << angle << " ";
         
     double angle2 = atan((F.dir_y) / (F.dir_x));
     Vector2 F_center2 = {F.size.x / 2, F.size.y / 2};
