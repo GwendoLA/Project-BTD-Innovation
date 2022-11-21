@@ -28,6 +28,11 @@ void dessiner_ballon (Ballon ballon) { // Pour dessiner un ballon, en fonction p
     DrawCircleV(ballon.position,ballon.radius,ballon.color);
     }
 }
+void dessiner_ballon2 (Ballon ballon) { // Pour dessiner un ballon, en fonction position rayon et couleur
+    if (ballon.etat==1){
+    DrawCircleV(ballon.position,ballon.radius,{0,0,255,25});
+    }
+}
 
 Vector4 bouger_ballon(Ballon ballon,Rectangle r1, Rectangle r2){ // Pour bouger le ballon d'un rectangle à un autre
     float x1=r1.x+(r1.width)/2;
