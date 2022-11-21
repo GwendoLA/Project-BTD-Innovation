@@ -122,7 +122,7 @@ int main(void)
         for (int i = 0; i < 36; i++)
         {
             DrawRectangleRec(chemin[i], {189, 196, 134, 255});
-            DrawRectangleRec({chemin[i].x + 10, chemin[i].y + 10, chemin[i].width - 20, chemin[i].height - 20}, {189, 196, 134, 255});
+            DrawRectangleRec({chemin[i].x + 1, chemin[i].y + 1, chemin[i].width - 2, chemin[i].height - 2}, {90, 98, 65, 255});
         }
 
         if (start_round)
@@ -271,6 +271,17 @@ int main(void)
             //     pause = !pause;
             // if (!pause)
             // {
+        }
+        for (int i = 0; i < ballons_cree; i++)
+        {
+            dessiner_ballon2(ballons[i]);
+            // if (IsKeyPressed(KEY_SPACE))
+            //     pause = !pause;
+            // if (!pause)
+            // {
+        }
+
+        for (int i = 0; i < ballons_cree; i++){
             Ballon B = ballons[i];
             Vector2 fin = {(SQUARE_SIZE * 10) + SQUARE_SIZE / 2, SQUARE_SIZE / 2};
             if (B.position.x == fin.x && B.position.y == fin.y && B.etat == 1)
