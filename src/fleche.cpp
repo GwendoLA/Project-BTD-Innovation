@@ -16,9 +16,10 @@ typedef struct Fleche
     Vector2 position;
     Vector2 size;
     Color color;
+    Texture texture;
 } Fleche;
 
-Fleche creer_fleche(Vector2 position, Ballon B)
+Fleche creer_fleche(Vector2 position, Ballon B, Texture texture)
 {
     Fleche F;
     F.etat = 1;
@@ -28,9 +29,26 @@ Fleche creer_fleche(Vector2 position, Ballon B)
     F.position = position;
     F.size = {60, 15};
     F.color = PINK;
+    F.texture = texture;
     return F;
 }
 
+float signaz(float &num)
+{
+    if (num > 0.)
+    {
+        return 1.;
+    }
+    if (num == 0.)
+    {
+        return 0.;
+    }
+    if (num < 0.)
+    {
+        return -1.;
+    }
+    return 0;
+}
 void dessiner_fleche(Fleche &F)
 { // Pour dessiner un ballon, en fonction position rayon et couleur
     if (F.etat == 1)
@@ -41,9 +59,9 @@ void dessiner_fleche(Fleche &F)
         Rect_F.y = F.position.y;
         Rect_F.height = F.size.y;
         Rect_F.width = F.size.x;
-        double angle = atan((F.dir_y) / (F.dir_x));
-        double pi = M_PI;
-        angle = (angle * 180.) / pi;
+        float angle = atan((F.dir_y) / (F.dir_x))+M_PI/2;
+        // double pi = M_PI;
+        // angle = (angle * 180.) / pi;
 
         // if (F.dir_x<0 && F.dir_y<0){
         //     angle=angle;
@@ -52,16 +70,52 @@ void dessiner_fleche(Fleche &F)
         // {
         //     angle=angle;
         // }
+        int indice = 0;
         if (F.dir_x > 0 && F.dir_y > 0)
         {
-            angle += 180.;
+            // angle += 180.;
+            // angle += M_PI/2;
+            indice = 1;
         }
         if (F.dir_x < 0 && F.dir_y > 0)
         {
-            angle += 180.;
+            // angle += 180.;
+            angle += M_PI;
+            indice = 2;
+        }
+        if (F.dir_x > 0 && F.dir_y < 0)
+        {
+            // angle += 180.;
+            // angle += M_PI;
+            indice = 1;
+        }
+        if (F.dir_x < 0 && F.dir_y < 0)
+        {
+            // angle += 180.;
+            angle += M_PI;
+            indice = 2;
         }
 
-        DrawRectanglePro(Rect_F, F_center, angle, F.color);
+
+        // DrawRectanglePro(Rect_F, F_center, angle, F.color);
+        std::cout << angle << " ";
+        
+    double angle2 = atan((F.dir_y) / (F.dir_x));
+    Vector2 F_center2 = {F.size.x / 2, F.size.y / 2};
+    Vector2 points[4] = {
+        {-F_center2.x, -F_center2.y},
+        {F_center2.x, -F_center2.y},
+        {-F_center2.x, F_center2.y},
+        {F_center2.x, F_center2.y}};
+    float distances = sqrt(pow(F_center2.x, 2) + pow(F_center2.y, 2));
+    // Vector2 points_arrive[4] = {};
+    // for (int i = 0; i < 4; i++)
+    // {
+        float current_angle2 = abs(atan(points[indice].y / points[indice].x));
+        Vector2 point_arrive = {(float)(F.position.x + signaz(points[indice].x) * distances * cos(signaz(points[indice].x) * signaz(points[indice].y) * angle2 + current_angle2)),
+                            (float)(F.position.y + signaz(points[indice].y) * distances * sin(signaz(points[indice].x) * signaz(points[indice].y) * angle2 + current_angle2))};
+    // }
+    DrawTextureEx(F.texture, point_arrive,180*angle/M_PI, 0.1,WHITE);
     }
 }
 
@@ -84,22 +138,6 @@ bool check_coll_s_b(Singe S, Ballon B)
     return false;
 }
 
-float signaz(float &num)
-{
-    if (num > 0.)
-    {
-        return 1.;
-    }
-    if (num == 0.)
-    {
-        return 0.;
-    }
-    if (num < 0.)
-    {
-        return -1.;
-    }
-    return 0;
-}
 
 Fleche check_coll_b_f(Fleche F, Ballon B)
 {

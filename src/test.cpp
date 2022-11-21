@@ -13,6 +13,7 @@ int main(void)
 {
     // Initialisation fenetre
     InitWindow(screenWidth, screenHeight, " Singe Tower Defense ");
+    Image im_fleche = LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/flechette.png");
     Image im_singe = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
     Image im_singe_bis = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
     Image im_singe2 = LoadImage("C:/Users/maeva/OneDrive/Images/singe2.png");
@@ -21,6 +22,7 @@ int main(void)
     ImageResize(&im_singe_bis, 100, 100);
     ImageResize(&im_singe2, 150, 150);
     ImageResize(&im_singe2_bis, 100, 100);
+    Texture2D texture_fleche = LoadTextureFromImage(im_fleche);
     Texture2D texture = LoadTextureFromImage(im_singe);
     Texture2D textsinge = LoadTextureFromImage(im_singe_bis);
     Texture2D texture2 = LoadTextureFromImage(im_singe2);
@@ -28,7 +30,7 @@ int main(void)
 
     SetTargetFPS(60);
 
-    menu();
+    bool need_to_close = menu_start();
     //--------------------------------------------------------------------------------------
     int round = 0;
     int vies = 40;
@@ -81,8 +83,9 @@ int main(void)
     lignes_chemin(10, 2, 11, chemin, false);
     colonnes_chemin(11, 1, 1, chemin, true);
 
-    while (!WindowShouldClose() && victoire == false && defaite == false)
+    while (!need_to_close && victoire == false && defaite == false)
     { // Detect window close button or ESC key
+        need_to_close = WindowShouldClose();
         // dessiner_bouton(bouton1);
         index++;
         compteur++;
@@ -314,7 +317,7 @@ int main(void)
                     {
                         if (!singe_tir)
                         {
-                            Fleche fleche1 = creer_fleche({singes[s].position.x + ((singes[s].taille.x) / 2), singes[s].position.y + ((singes[s].taille.y) / 2)}, ballons[i]);
+                            Fleche fleche1 = creer_fleche({singes[s].position.x + ((singes[s].taille.x) / 2), singes[s].position.y + ((singes[s].taille.y) / 2)}, ballons[i],texture_fleche);
                             singe_tir = true;
                             fleches[nb_fleches] = fleche1;
                             nb_fleches++;
@@ -378,6 +381,8 @@ int main(void)
 
         EndDrawing();
     }
+    UnloadImage(im_fleche);
+    UnloadTexture(texture_fleche); // Unload texture from VRAM
     UnloadTexture(texture); // Unload texture from VRAM
     UnloadImage(im_singe);
     UnloadTexture(textsinge); // Unload texture from VRAM
@@ -387,14 +392,17 @@ int main(void)
     UnloadTexture(textsinge2); // Unload texture from VRAM
     UnloadImage(im_singe2_bis);
 
-    if (victoire)
+    if (!need_to_close && victoire)
     {
         // a faire
+        menu_victoire();
+        
     }
 
-    if (defaite)
+    if (!need_to_close && defaite)
     {
         // a faire
+        menu_defaite();
     }
 
     CloseWindow(); // Close window and OpenGL context
