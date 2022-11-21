@@ -1,6 +1,6 @@
 #include "raylib.h"
 #include <iostream>
-#include <stdlib.h> 
+#include <stdlib.h>
 
 typedef struct Ballon
 { // Structure Ballon
@@ -10,7 +10,6 @@ typedef struct Ballon
     int rect;
     Color color;
 } Ballon;
-
 
 Ballon creer_ballon(Vector2 position, int radius)
 { // Pour créer un objet Ballon
@@ -23,50 +22,60 @@ Ballon creer_ballon(Vector2 position, int radius)
     return ballon;
 }
 
-void dessiner_ballon (Ballon ballon) { // Pour dessiner un ballon, en fonction position rayon et couleur
-    if (ballon.etat==1){
-    DrawCircleV(ballon.position,ballon.radius,ballon.color);
+void dessiner_ballon(Ballon ballon)
+{ // Pour dessiner un ballon, en fonction position rayon et couleur
+    if (ballon.etat == 1)
+    {
+        DrawCircleV(ballon.position, ballon.radius, ballon.color);
     }
 }
-void dessiner_ballon2 (Ballon ballon) { // Pour dessiner un ballon, en fonction position rayon et couleur
-    if (ballon.etat==1){
-    DrawCircleV(ballon.position,ballon.radius,{0,0,255,25});
+void dessiner_ballon2(Ballon ballon)
+{ // Pour dessiner un ballon, en fonction position rayon et couleur
+    if (ballon.etat == 1)
+    {
+        DrawCircleV(ballon.position, ballon.radius, {0, 0, 255, 30});
     }
 }
 
-Vector4 bouger_ballon(Ballon ballon,Rectangle r1, Rectangle r2){ // Pour bouger le ballon d'un rectangle à un autre
-    float x1=r1.x+(r1.width)/2;
-    float y1=r1.y+(r1.height)/2;
-    float x2=r2.x+(r2.width)/2;
-    float y2=r2.y+(r2.height)/2;
-    float diff_x= x2-x1;
-    float diff_y= y2-y1;
-    return {diff_x, diff_y,x2,y2};
+Vector4 bouger_ballon(Ballon ballon, Rectangle r1, Rectangle r2)
+{ // Pour bouger le ballon d'un rectangle à un autre
+    float x1 = r1.x + (r1.width) / 2;
+    float y1 = r1.y + (r1.height) / 2;
+    float x2 = r2.x + (r2.width) / 2;
+    float y2 = r2.y + (r2.height) / 2;
+    float diff_x = x2 - x1;
+    float diff_y = y2 - y1;
+    return {diff_x, diff_y, x2, y2};
 }
-Ballon mouv(Ballon B, Rectangle liste_R[8], int nbr_r, bool pause){
-    int i=0;
-    int j = B.rect; 
-    if (i!=j && j<nbr_r){  // i et j permettent les itérations
-        i=j-1;
-        Vector4 bouge = bouger_ballon(B,liste_R[i],liste_R[i+1]);
-        if (B.position.x!=bouge.z){
-            B.position.x+=(bouge.x/50); 
+Ballon mouv(Ballon B, Rectangle liste_R[8], int nbr_r, bool pause)
+{
+    int i = 0;
+    int j = B.rect;
+    if (i != j && j < nbr_r)
+    { // i et j permettent les itérations
+        i = j - 1;
+        Vector4 bouge = bouger_ballon(B, liste_R[i], liste_R[i + 1]);
+        if (B.position.x != bouge.z)
+        {
+            B.position.x += (bouge.x / 50);
         }
-        if (B.position.y!=bouge.w){
-            B.position.y+=(bouge.y/50);
-        } 
-        if ((B.position.x==bouge.z)&&(B.position.y==bouge.w)){
-            j+=1;
-            B.rect=j; 
+        if (B.position.y != bouge.w)
+        {
+            B.position.y += (bouge.y / 50);
         }
-        return B;               
+        if ((B.position.x == bouge.z) && (B.position.y == bouge.w))
+        {
+            j += 1;
+            B.rect = j;
+        }
+        return B;
     }
-    else {
-        B.etat=0;
-        return B;            // le ballon est à la fin du chemin -> fin du round
-    }   
+    else
+    {
+        B.etat = 0;
+        return B; // le ballon est à la fin du chemin -> fin du round
+    }
 }
-
 
 // int main(){
 //     InitWindow(screenWidth, screenHeight, "test collision avec structure");
@@ -95,37 +104,34 @@ Ballon mouv(Ballon B, Rectangle liste_R[8], int nbr_r, bool pause){
 
 ////   bool pause = false; // jeu en pause ou non, avec la barre espace
 ////   int nbr_rectangle = 8; // nombre de rectangle du chemin
-    
+
 //     while (!WindowShouldClose()){
 
 //         BeginDrawing();
 //         ClearBackground(RAYWHITE);
 
 //         DrawRectangleRec(box1, BLUE);
-//         DrawRectangleRec(box2, BLUE);    
+//         DrawRectangleRec(box2, BLUE);
 //         DrawRectangleRec(box3, BLUE);
 //         DrawRectangleRec(box4, BLUE);
 //         DrawRectangleRec(box5, BLUE);
-//         DrawRectangleRec(box6, BLUE);    
+//         DrawRectangleRec(box6, BLUE);
 //         DrawRectangleRec(box7, BLUE);
 //         DrawRectangleRec(box8, BLUE);
-        
+
 ////       if (IsKeyPressed(KEY_SPACE)) pause = !pause;
 ////       if (!pause) {
-////           ballon1 = mouv(ballon1,liste_R,nbr_rectangle,pause); 
-////           ballon2 = mouv(ballon2,liste_R,nbr_rectangle,pause);                 
-////       }   
-        
+////           ballon1 = mouv(ballon1,liste_R,nbr_rectangle,pause);
+////           ballon2 = mouv(ballon2,liste_R,nbr_rectangle,pause);
+////       }
+
 ////       dessiner_ballon(ballon1);
-////       dessiner_ballon(ballon2);  
+////       dessiner_ballon(ballon2);
 //         EndDrawing();
 //     }
-//     CloseWindow(); 
+//     CloseWindow();
 //     return 0;
 // }
-
-
-
 
 /// (COL) if (((boxA.x + boxA.width) >= GetScreenWidth()) || (boxA.x <= 0)) boxASpeedX *= -1;
 /// (COL) if (((boxA.y + boxA.height) >= GetScreenHeight()) || (boxA.y <= 0)) boxASpeedY *= -1;
@@ -136,5 +142,4 @@ Ballon mouv(Ballon B, Rectangle liste_R[8], int nbr_r, bool pause){
 /// (COL) else {
 /// (COL)     ballon1.etat = 1;
 /// (COL) }
-/// (COL) DrawRectangleRec(boxA, GOLD);  
-
+/// (COL) DrawRectangleRec(boxA, GOLD);

@@ -59,7 +59,7 @@ void dessiner_fleche(Fleche &F)
         Rect_F.y = F.position.y;
         Rect_F.height = F.size.y;
         Rect_F.width = F.size.x;
-        float angle = atan((F.dir_y) / (F.dir_x))+M_PI/2;
+        float angle = atan((F.dir_y) / (F.dir_x)) + M_PI / 2;
         // double pi = M_PI;
         // angle = (angle * 180.) / pi;
 
@@ -96,26 +96,20 @@ void dessiner_fleche(Fleche &F)
             indice = 2;
         }
 
-
         // DrawRectanglePro(Rect_F, F_center, angle, F.color);
-        // std::cout << angle << " ";
-        
-    double angle2 = atan((F.dir_y) / (F.dir_x));
-    Vector2 F_center2 = {F.size.x / 2, F.size.y / 2};
-    Vector2 points[4] = {
-        {-F_center2.x, -F_center2.y},
-        {F_center2.x, -F_center2.y},
-        {-F_center2.x, F_center2.y},
-        {F_center2.x, F_center2.y}};
-    float distances = sqrt(pow(F_center2.x, 2) + pow(F_center2.y, 2));
-    // Vector2 points_arrive[4] = {};
-    // for (int i = 0; i < 4; i++)
-    // {
+
+        double angle2 = atan((F.dir_y) / (F.dir_x));
+        Vector2 F_center2 = {F.size.x / 2, F.size.y / 2};
+        Vector2 points[4] = {
+            {-F_center2.x, -F_center2.y},
+            {F_center2.x, -F_center2.y},
+            {-F_center2.x, F_center2.y},
+            {F_center2.x, F_center2.y}};
+        float distances = sqrt(pow(F_center2.x, 2) + pow(F_center2.y, 2));
         float current_angle2 = abs(atan(points[indice].y / points[indice].x));
         Vector2 point_arrive = {(float)(F.position.x + signaz(points[indice].x) * distances * cos(signaz(points[indice].x) * signaz(points[indice].y) * angle2 + current_angle2)),
-                            (float)(F.position.y + signaz(points[indice].y) * distances * sin(signaz(points[indice].x) * signaz(points[indice].y) * angle2 + current_angle2))};
-    // }
-    DrawTextureEx(F.texture, point_arrive,180*angle/M_PI, 0.1,WHITE);
+                                (float)(F.position.y + signaz(points[indice].y) * distances * sin(signaz(points[indice].x) * signaz(points[indice].y) * angle2 + current_angle2))};
+        DrawTextureEx(F.texture, point_arrive, 180 * angle / M_PI, 0.1, WHITE);
     }
 }
 
@@ -137,7 +131,6 @@ bool check_coll_s_b(Singe S, Ballon B)
     }
     return false;
 }
-
 
 Fleche check_coll_b_f(Fleche F, Ballon B)
 {
