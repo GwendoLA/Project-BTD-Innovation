@@ -12,7 +12,7 @@
 int main(void)
 {
     // Initialisation fenetre
-    InitWindow(screenWidth, screenHeight, " classic game: missile commander");
+    InitWindow(screenWidth, screenHeight, " Singe Tower Defense ");
     Image im_singe = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
     Image im_singe_bis = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
     Image im_singe2 = LoadImage("C:/Users/maeva/OneDrive/Images/singe2.png");

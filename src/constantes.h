@@ -11,4 +11,4 @@
     {                    \
         3, 130, 9, 255   \
     }
-#define COLOR_TEXT GOLD
+#define COLOR_TEXT WHITE
