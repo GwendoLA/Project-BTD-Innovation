@@ -22,14 +22,14 @@ Ballon creer_ballon(Vector2 position, int radius)
     return ballon;
 }
 
-void dessiner_ballon(Ballon ballon)
+void dessiner_ballon(Ballon ballon) // Pour dessiner les ballons
 { // Pour dessiner un ballon, en fonction position rayon et couleur
     if (ballon.etat == 1)
     {
         DrawCircleV(ballon.position, ballon.radius, ballon.color);
     }
 }
-void dessiner_ballon2(Ballon ballon)
+void dessiner_ballon2(Ballon ballon) // Dessiner les ballons, qui servira à faire la superposition de ces derniers
 { // Pour dessiner un ballon, en fonction position rayon et couleur
     if (ballon.etat == 1)
     {

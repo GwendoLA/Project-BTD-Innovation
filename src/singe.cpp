@@ -11,8 +11,8 @@ typedef struct Singe        // Notre Structure singe
     Vector2 taille;
     int range; // zone de detection des ballons
     int ang;   // angle pris par le singe, utile pour les prochaines améliorations
-    int fatigue;    //la fatigue du singe à chaque instant, celle ci réduit petit à petit (-1 à chaque frame)
-    int fatigue_tir; //le niveau de fatigue que prend le singe après avoir tiré
+    int fatigue;    //la fatigue du singe à chaque instant, celle ci réduit petit à petit (-1 à chaque frame). Quand le singe est fatigué <=> fatigue !=0, il me peut pas tirer
+    int fatigue_tir; //le niveau de fatigue que prend le singe après avoir tiré une flèche
     Color color;
     Texture texture;
 

@@ -140,16 +140,16 @@ int main(void)
             if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
             {
                 if (detect_click(bouton1) && money - 250 >= 0)
-                {
-                    henry = creer_singe(GetMousePosition(), 120);
-                    henry.etat = true;
+                { // Henry est le singe de transition, entre le moment où on clique sur le boutonn et le moment où on le positionne sur la map
+                    henry = creer_singe(GetMousePosition(), 120);   // Henry est de niveau 1, avec une fatigue_tir = 120
+                    henry.etat = true;                              
                 }
 
                 else if (henry.etat == true)
                 {
                     bool coll_singe = false;
                     henry.etat = false;
-                    for (Singe singe : singes)
+                    for (Singe singe : singes)      // Empecher de positionner Henry sur un autre singe
                     {
                         if (check_collision_singe2(henry, singe))
                         {
@@ -158,7 +158,7 @@ int main(void)
                         }
                     }
                     if (check_collision_singe(henry, chemin) == false && CheckCollisionPointRec({GetMousePosition().x + 50, GetMousePosition().y + 50}, rect_affichage) == false & coll_singe == false)
-                    {
+                    { // Empecher de positionner Henry sur le chemin
                         Singe singe1 = henry;
                         singe1.etat = true;
                         singes[nb_singes] = singe1;
@@ -168,8 +168,8 @@ int main(void)
                 }
 
                 if (detect_click(bouton2) && money - 400 >= 0)
-                {
-                    marc = creer_singe(GetMousePosition(), 60);
+                {// Marc est le singe de transition, entre le moment où on clique sur le boutonn et le moment où on le positionne sur la map
+                    marc = creer_singe(GetMousePosition(), 60); // Marc est de niveau 2, avec une fatigue_tir = 60
                     marc.etat = true;
                 }
 
@@ -177,7 +177,7 @@ int main(void)
                 {
                     bool coll_singe = false;
                     marc.etat = false;
-                    for (Singe singe : singes)
+                    for (Singe singe : singes) //Empecher de positionner Marc sur un autre singe
                     {
                         if (check_collision_singe2(marc, singe))
                         {
@@ -186,7 +186,7 @@ int main(void)
                         }
                     }
                     if (check_collision_singe(marc, chemin) == false && CheckCollisionPointRec({GetMousePosition().x + 50, GetMousePosition().y + 50}, rect_affichage) == false & coll_singe == false)
-                    {
+                    {// Empecher de positionner Marc sur le chemin
                         Singe singe1 = marc;
                         singe1.etat = true;
                         singes[nb_singes] = singe1;
@@ -195,13 +195,13 @@ int main(void)
                     }
                 }
 
-                if (detect_click(bouton_round))
+                if (detect_click(bouton_round)) // Lancer un round
                 {
                     bool fin_round = true;
                     for (Ballon ballon : ballons)
                     {
 
-                        if (ballon.etat == 1)
+                        if (ballon.etat == 1)  // verifier l'état de tous les ballons
                         {
                             fin_round = false;
                             break;
@@ -219,25 +219,25 @@ int main(void)
                     }
                 }
             }
-            if (henry.etat == true)
+            if (henry.etat == true) // dessiner Henry 
             {
                 Vector2 milieu_singe = {GetMousePosition().x - 50, GetMousePosition().y - 50};
                 henry.position = milieu_singe;
                 dessiner_singe(henry, textsinge);
             }
 
-            if (marc.etat == true)
+            if (marc.etat == true) // dessiner Marc 
             {
                 Vector2 milieu_singe = {GetMousePosition().x - 50, GetMousePosition().y - 50};
                 marc.position = milieu_singe;
                 dessiner_singe(marc, textsinge2);
             }
 
-            for (int i = 0; i < ballons_cree; i++)
+            for (int i = 0; i < ballons_cree; i++)  // dessiner les ballons 
             {
                 dessiner_ballon(ballons[i]);
             }
-            for (int i = 0; i < ballons_cree; i++)
+            for (int i = 0; i < ballons_cree; i++) // dessiner des ballons en superposition
             {
                 dessiner_ballon2(ballons[i]);
             }
@@ -245,20 +245,20 @@ int main(void)
             for (int i = 0; i < ballons_cree; i++)
             {
                 Ballon B = ballons[i];
-                Vector2 fin = {(SQUARE_SIZE * 10) + SQUARE_SIZE / 2, SQUARE_SIZE / 2};
+                Vector2 fin = {(SQUARE_SIZE * 10) + SQUARE_SIZE / 2, SQUARE_SIZE / 2}; // vecteur indiquant la fin du chemin, si un ballon atteint cette position, le joueur perd une vie
                 if (B.position.x == fin.x && B.position.y == fin.y && B.etat == 1)
                 {
                     vies -= 1; // si un ballon arrive à la fin du chemin, on perd 1 vie
                     ballons_vivants -= 1;
-                    if (vies == 0)
+                    if (vies == 0) 
                     {
                         defaite = true;
                     }
                 }
-                ballons[i] = mouv(ballons[i], chemin, nbr_rectangle, pause);
+                ballons[i] = mouv(ballons[i], chemin, nbr_rectangle, pause); // faire bouger les ballons le long du chemin
             }
 
-            for (int i = 0; i < nb_fleches; i++)
+            for (int i = 0; i < nb_fleches; i++) // Mettre en action les flèches
             {
                 mouv_fleche(fleches[i]);
             }
@@ -266,14 +266,14 @@ int main(void)
             for (int s = 0; s < nb_singes; s++)
             {
                 bool singe_tir = false;
-                for (int i = 0; i < nb_ballons; i++)
+                for (int i = 0; i < nb_ballons; i++) // pour tous les ballons
                 {
-                    if (ballons[i].etat == 1)
+                    if (ballons[i].etat == 1) // s'ils sont encore en vie <=> etat=1
                     {
-                        if ((check_coll_s_b(singes[s], ballons[i])) && singes[s].fatigue == 0)
+                        if ((check_coll_s_b(singes[s], ballons[i])) && singes[s].fatigue == 0) // si ballon arrive dans le range du singe et que le singe peut tirer
                         {
                             if (!singe_tir)
-                            {
+                            { // On crée une flèche et le singe devient fatigué
                                 Fleche fleche1 = creer_fleche({singes[s].position.x + ((singes[s].taille.x + 20) / 2), singes[s].position.y + ((singes[s].taille.y + 20) / 2)}, ballons[i], texture_fleche);
                                 singe_tir = true;
                                 fleches[nb_fleches] = fleche1;
@@ -283,7 +283,7 @@ int main(void)
                         }
 
                         for (int j = 0; j < nb_fleches; j++)
-                        {
+                        { //  Pour toutes les flèches
                             if (fleches[j].cible == 0 && fleches[j].etat != 0)
                             {
                                 check_coll_b_f(fleches[j], ballons[i]);
