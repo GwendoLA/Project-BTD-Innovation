@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include <iostream>
+#include "constantes.h"
 
 bool menu_start()
 {
@@ -20,7 +21,7 @@ bool menu_start()
 
 void menu_victoire()
 {
-    Image im_fleche = LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/flechette.png");
+    Image im_fleche = LoadImage(PATH_VICTOIRE);
     Texture2D texture_fleche = LoadTextureFromImage(im_fleche);
     while (!WindowShouldClose() && !(IsKeyPressed(KEY_ENTER)))
     {
@@ -39,7 +40,7 @@ void menu_victoire()
 
 void menu_defaite()
 {
-    Image im_fleche = LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/flechette.png");
+    Image im_fleche = LoadImage(PATH_DEFAITE);
     Texture2D texture_fleche = LoadTextureFromImage(im_fleche);
     while (!WindowShouldClose() && !(IsKeyPressed(KEY_ENTER)))
     {
