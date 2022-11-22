@@ -13,12 +13,18 @@ int main(void)
 {
     // Initialisation fenetre
     InitWindow(screenWidth, screenHeight, " classic game: missile commander");
-    Image im_singe = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
-    Image im_singe2 = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
+    Image im_singe = LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe3.png");
+    Image im_singe_bis = LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe3.png");
+    Image im_singe2= LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe2.png");
+    Image im_singe2_bis= LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe2.png");
     ImageResize(&im_singe, 150, 150);
-    ImageResize(&im_singe2, 100, 100);
+    ImageResize(&im_singe_bis, 100, 100);
+    ImageResize(&im_singe2, 150, 150);
+    ImageResize(&im_singe2_bis, 100, 100);
     Texture2D texture = LoadTextureFromImage(im_singe);
-    Texture2D textsinge = LoadTextureFromImage(im_singe2);
+    Texture2D textsinge = LoadTextureFromImage(im_singe_bis);
+    Texture2D texture2 = LoadTextureFromImage(im_singe2);
+    Texture2D textsinge2 = LoadTextureFromImage(im_singe2_bis);
 
     SetTargetFPS(60);
 
@@ -33,6 +39,8 @@ int main(void)
     int compteur = 0;
     bool start_round = false;
     int ballons_vivants = 0;
+    bool victoire= false;
+    bool defaite= false;
 
     // création de la liste de stockage des ballons
     Ballon ballons[1000] = {};
@@ -41,11 +49,14 @@ int main(void)
     Rectangle chemin[36] = {};
 
     Button bouton1 = creer_bouton({13 * SQUARE_SIZE, 3.8 * SQUARE_SIZE}, {2.25 * SQUARE_SIZE, 0.75 * SQUARE_SIZE}, "250 MONEY");
+    Button bouton2 = creer_bouton({13 * SQUARE_SIZE, 6.5 * SQUARE_SIZE}, {2.25 * SQUARE_SIZE, 0.75 * SQUARE_SIZE}, "400 MONEY");
     Button bouton_round = creer_bouton({13 * SQUARE_SIZE, 7.75 * SQUARE_SIZE}, {2.25 * SQUARE_SIZE, 0.75 * SQUARE_SIZE}, "START ROUND");
 
     // On crée henry, le singe de transition
 
-    Singe henry = creer_singe({0.0});
+    Singe henry = creer_singe({0.0},120);
+    Singe marc = creer_singe({0.0},60);
+
 
     // création de la liste de stockage des singes
     Singe singes[100] = {};
@@ -71,7 +82,7 @@ int main(void)
     lignes_chemin(10, 2, 11, chemin, false);
     colonnes_chemin(11, 1, 1, chemin, true);
 
-    while (!WindowShouldClose())
+    while (!WindowShouldClose() && victoire== false && defaite== false)
     { // Detect window close button or ESC key
         // dessiner_bouton(bouton1);
         index++;
@@ -79,7 +90,7 @@ int main(void)
 
         for (int s = 0; s < nb_singes; s++)
         {
-            if (!singes[s].fatigue <= 0)
+            if (singes[s].fatigue > 0)
             {
                 singes[s].fatigue -= 1;
             }
@@ -103,7 +114,9 @@ int main(void)
         DrawRectangle(12.5 * SQUARE_SIZE, 0.25 * SQUARE_SIZE, 3.25 * SQUARE_SIZE, 8.5 * SQUARE_SIZE, LIGHTGRAY);
         DrawText(TextFormat(" ROUND : %4i \n MONEY : %4i \n VIES : %4i", round, money, vies), 1250, 30, 40, MAGENTA);
         DrawTexture(texture, 13.25 * SQUARE_SIZE, 2.25 * SQUARE_SIZE, WHITE);
+        DrawTexture(texture2, 13.25 * SQUARE_SIZE, 5 * SQUARE_SIZE, WHITE);
         dessiner_bouton(bouton1, 30);
+        dessiner_bouton(bouton2, 30);
         dessiner_bouton(bouton_round, 25);
 
         // DrawRectangle(0, 100, 300, 80, DARKGRAY);  // gauche, haut, longueur, largeur
@@ -114,7 +127,7 @@ int main(void)
 
         if (start_round)
         {
-            if (compteur % 60 == 0 & ballons_cree < nb_ballons)
+            if (compteur % (60-round) == 0 & ballons_cree < nb_ballons)
             {
                 Ballon ballon2 = creer_ballon({50, 350}, 30);
                 ballons[ballons_cree] = ballon2;
@@ -128,7 +141,7 @@ int main(void)
         {
             if (detect_click(bouton1) && money-250>=0)
             {
-                henry = creer_singe(GetMousePosition());
+                henry = creer_singe(GetMousePosition(),120);
                 henry.etat = true;
             }
 
@@ -150,6 +163,32 @@ int main(void)
                 }
             }
 
+            if (detect_click(bouton2) && money-400>=0)
+            {
+                marc = creer_singe(GetMousePosition(),60);
+                marc.etat = true;
+            }
+
+            else if (marc.etat == true)
+            {   bool coll_singe= false;
+                marc.etat = false;
+                for (Singe singe : singes){
+                        if (check_collision_singe2(marc, singe)){
+                            coll_singe= true;
+                        }
+                    }
+                if (check_collision_singe(marc, chemin) == false && CheckCollisionPointRec({GetMousePosition().x+50,GetMousePosition().y+50} , rect_affichage) == false & coll_singe==false )
+                {
+                    Singe singe1 = marc;
+                    singe1.etat = true;
+                    singes[nb_singes] = singe1;
+                    nb_singes++;
+                    money -= 400;
+                }
+            }
+
+
+
             if (detect_click(bouton_round))
             {   bool fin_round = true;
                 for (Ballon ballon : ballons)
@@ -166,8 +205,9 @@ int main(void)
                     start_round = true;
                     ballons_cree = 0;
                     round += 1;
-                    nb_ballons += 5;
+                    nb_ballons += 15;
                     ballons_vivants= nb_ballons;
+
                 }
             }
         }
@@ -177,6 +217,13 @@ int main(void)
             Vector2 milieu_singe= {GetMousePosition().x-50,GetMousePosition().y-50};
             henry.position = milieu_singe;
             dessiner_singe(henry, textsinge);
+        }
+
+        if (marc.etat == true)
+        {
+            Vector2 milieu_singe= {GetMousePosition().x-50,GetMousePosition().y-50};
+            marc.position = milieu_singe;
+            dessiner_singe(marc, textsinge2);
         }
 
         // DrawRectangle(300, 400, 300, 80, DARKGRAY);
@@ -195,6 +242,9 @@ int main(void)
                 if (B.position.x == fin.x && B.position.y == fin.y && B.etat == 1)
                 {
                     vies -= 1; // si un ballon arrive à la fin du chemin, on perd 1 vie
+                    if (vies==0){
+                        defaite= true;
+                    }
                 }
                 ballons[i] = mouv(ballons[i], chemin, nbr_rectangle, pause);
             }
@@ -222,7 +272,7 @@ int main(void)
                             singe_tir = true;
                             fleches[nb_fleches] = fleche1;
                             nb_fleches++;
-                            singes[s].fatigue += 120;
+                            singes[s].fatigue += singes[s].fatigue_tir;
                         }
                     }
 
@@ -241,6 +291,9 @@ int main(void)
                             ballons_vivants -= 1;
                             if (ballons_vivants==0){
                                 money+= 100-(round-1);
+                                if (round==50){
+                                    victoire= true;
+                                }
                             }
                         }
                         if (fleches[j].cible == 2)
@@ -254,7 +307,14 @@ int main(void)
 
         for (int i = 0; i < nb_singes; i++)
         {
-            dessiner_singe(singes[i], textsinge);
+            if (singes[i].fatigue_tir==120){
+                 dessiner_singe(singes[i], textsinge);
+            }
+
+            if (singes[i].fatigue_tir==60){
+                 dessiner_singe(singes[i], textsinge2);
+            }
+           
         }
 
         for (int i = 0; i < nb_fleches; i++)
@@ -267,9 +327,23 @@ int main(void)
     UnloadTexture(texture); // Unload texture from VRAM
     UnloadImage(im_singe);
     UnloadTexture(textsinge); // Unload texture from VRAM
+    UnloadImage(im_singe_bis);
+    UnloadTexture(texture2); // Unload texture from VRAM
     UnloadImage(im_singe2);
+    UnloadTexture(textsinge2); // Unload texture from VRAM
+    UnloadImage(im_singe2_bis);
+
+    if (victoire){
+        // a faire 
+    }
+
+    if (defaite){
+        // a faire 
+    }
+
 
     CloseWindow(); // Close window and OpenGL context
 
     return 0;
 }
+
