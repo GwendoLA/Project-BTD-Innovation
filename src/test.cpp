@@ -13,10 +13,10 @@ int main(void)
 {
     // Initialisation fenetre
     InitWindow(screenWidth, screenHeight, " classic game: missile commander");
-    Image im_singe = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
-    Image im_singe_bis = LoadImage("C:/Users/maeva/OneDrive/Images/singe3.png");
-    Image im_singe2= LoadImage("C:/Users/maeva/OneDrive/Images/singe2.png");
-    Image im_singe2_bis= LoadImage("C:/Users/maeva/OneDrive/Images/singe2.png");
+    Image im_singe = LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe3.png");
+    Image im_singe_bis = LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe3.png");
+    Image im_singe2= LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe2.png");
+    Image im_singe2_bis= LoadImage("C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe2.png");
     ImageResize(&im_singe, 150, 150);
     ImageResize(&im_singe_bis, 100, 100);
     ImageResize(&im_singe2, 150, 150);
