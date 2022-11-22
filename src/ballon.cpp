@@ -2,12 +2,12 @@
 #include <iostream>
 #include <stdlib.h>
 
-typedef struct Ballon
-{ // Structure Ballon
+typedef struct Ballon // Notre structure ballon
+{ 
     int etat;
     Vector2 position;
     int radius;
-    int rect;
+    int rect;  // le rectangle du chemin sur lequel il se situe
     Color color;
 } Ballon;
 
@@ -38,7 +38,7 @@ void dessiner_ballon2(Ballon ballon)
 }
 
 Vector4 bouger_ballon(Ballon ballon, Rectangle r1, Rectangle r2)
-{ // Pour bouger le ballon d'un rectangle à un autre
+{ // Pour calculer le mouvement que va effectuer le ballon
     float x1 = r1.x + (r1.width) / 2;
     float y1 = r1.y + (r1.height) / 2;
     float x2 = r2.x + (r2.width) / 2;
@@ -48,7 +48,7 @@ Vector4 bouger_ballon(Ballon ballon, Rectangle r1, Rectangle r2)
     return {diff_x, diff_y, x2, y2};
 }
 Ballon mouv(Ballon B, Rectangle liste_R[8], int nbr_r, bool pause)
-{
+{ // Pour faire bouger le ballon d'un rectangle à un autre
     int i = 0;
     int j = B.rect;
     if (i != j && j < nbr_r)

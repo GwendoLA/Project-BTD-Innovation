@@ -4,15 +4,15 @@
 #include <vector>
 #include "constantes.h"
 
-typedef struct Singe
+typedef struct Singe        // Notre Structure singe
 {
     bool etat;
     Vector2 position;
     Vector2 taille;
     int range; // zone de detection des ballons
     int ang;   // angle pris par le singe, utile pour les prochaines améliorations
-    int fatigue;
-    int fatigue_tir;
+    int fatigue;    //la fatigue du singe à chaque instant, celle ci réduit petit à petit (-1 à chaque frame)
+    int fatigue_tir; //le niveau de fatigue que prend le singe après avoir tiré
     Color color;
     Texture texture;
 
@@ -39,7 +39,7 @@ void dessiner_singe(Singe singe, Texture text)
     // DrawCircleV({singe.position.x + 10 + singe.taille.x / 2, singe.position.y + 10 + singe.taille.x / 2}, singe.taille.x / 2, RAYWHITE);
 }
 
-bool check_collision_singe(Singe singe, Rectangle rectangles[36])
+bool check_collision_singe(Singe singe, Rectangle rectangles[36]) // vérifier la collision entre les singes et le chemin sur la map
 {
     Rectangle s;
     s.x = singe.position.x + 10;
@@ -56,7 +56,7 @@ bool check_collision_singe(Singe singe, Rectangle rectangles[36])
     return false;
 }
 
-bool check_collision_singe2(Singe singe1, Singe singe2)
+bool check_collision_singe2(Singe singe1, Singe singe2) // Pour empecher de positionner un singe sur un autre singe
 {
     Rectangle s1;
     s1.x = singe1.position.x;

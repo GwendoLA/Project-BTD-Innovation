@@ -26,6 +26,7 @@ int main(void)
     ImageResize(&im_singe_bis, 100, 100);
     ImageResize(&im_singe2, 150, 150);
     ImageResize(&im_singe2_bis, 100, 100);
+    // Chaque image  de singe est en deux fois : la version qui va être positionner sur la map et l'image qui sert d'icone sur la droite
 
     Texture2D texture_fleche = LoadTextureFromImage(im_fleche);
     Texture2D texture = LoadTextureFromImage(im_singe);
@@ -39,7 +40,6 @@ int main(void)
     //--------------------------------------------------------------------------------------
     int round = 0;
     int vies = VIE_DEPART;
-    int index = 0;
     int money = MONEY_DEPART;
     int nb_ballons = 0;
     int ballons_cree = 0;
@@ -84,7 +84,6 @@ int main(void)
             pause = !pause;
         if (!pause)
         {
-            index++;
             compteur++;
 
             for (int s = 0; s < nb_singes; s++)
