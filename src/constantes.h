@@ -6,6 +6,7 @@
 #define MONEY_DEPART 650
 // 735
 #define BALON_PAR_ROUND 15
+#define VIE_DEPART 40
 
 #define nbr_rectangle 36 // nombre de rectangle du chemin
 

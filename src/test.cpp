@@ -34,11 +34,11 @@ int main(void)
     Texture2D textsinge2 = LoadTextureFromImage(im_singe2_bis);
 
     SetTargetFPS(60);
-
+    // menu_defaite();
     bool need_to_close = menu_start();
     //--------------------------------------------------------------------------------------
-    int round = 49;
-    int vies = 40;
+    int round = 0;
+    int vies = VIE_DEPART;
     int index = 0;
     int money = MONEY_DEPART;
     int nb_ballons = 0;
@@ -113,7 +113,7 @@ int main(void)
             for (int i = 0; i < 36; i++)
             {
                 DrawRectangleRec(chemin[i], {189, 196, 134, 255});
-                DrawRectangleRec({chemin[i].x + 1, chemin[i].y + 1, chemin[i].width - 2, chemin[i].height - 2}, {90, 98, 65, 255});
+                // DrawRectangleRec({chemin[i].x + 1, chemin[i].y + 1, chemin[i].width - 2, chemin[i].height - 2}, {90, 98, 65, 255});
             }
 
             if (start_round)
