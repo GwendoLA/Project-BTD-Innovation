@@ -34,9 +34,9 @@ Singe creer_singe(Vector2 position, int fatigue_tir)
 
 void dessiner_singe(Singe singe, Texture text)
 {
-    // DrawTexture(text, singe.position.x, singe.position.y, WHITE);
+    DrawTexture(text, singe.position.x, singe.position.y, WHITE);
     // DrawRectangleRec({singe.position.x + 10, singe.position.y + 10, singe.taille.x, singe.taille.y}, RAYWHITE);
-    DrawCircleV({singe.position.x + 10 + singe.taille.x / 2, singe.position.y + 10 + singe.taille.x / 2}, singe.taille.x / 2, RAYWHITE);
+    // DrawCircleV({singe.position.x + 10 + singe.taille.x / 2, singe.position.y + 10 + singe.taille.x / 2}, singe.taille.x / 2, RAYWHITE);
 }
 
 bool check_collision_singe(Singe singe, Rectangle rectangles[36])

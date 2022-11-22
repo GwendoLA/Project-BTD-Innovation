@@ -37,7 +37,7 @@ int main(void)
 
     bool need_to_close = menu_start();
     //--------------------------------------------------------------------------------------
-    int round = 49;
+    int round = 0;
     int vies = 40;
     int index = 0;
     int money = MONEY_DEPART;
