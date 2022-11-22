@@ -37,7 +37,7 @@ int main(void)
 
     bool need_to_close = menu_start();
     //--------------------------------------------------------------------------------------
-    int round = 0;
+    int round = 49;
     int vies = 40;
     int index = 0;
     int money = MONEY_DEPART;
@@ -214,7 +214,7 @@ int main(void)
                         start_round = true;
                         ballons_cree = 0;
                         round += 1;
-                        nb_ballons += 15;
+                        nb_ballons += BALON_PAR_ROUND;
                         ballons_vivants = nb_ballons;
                         nb_fleches = 0;
                     }

@@ -3,7 +3,9 @@
 #define screenWidth 1600
 #define screenHeight 900
 
-#define MONEY_DEPART 6500
+#define MONEY_DEPART 650
+// 735
+#define BALON_PAR_ROUND 15
 
 #define nbr_rectangle 36 // nombre de rectangle du chemin
 
