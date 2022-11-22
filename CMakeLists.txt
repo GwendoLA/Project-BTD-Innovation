@@ -10,7 +10,7 @@ INCLUDE_DIRECTORIES(
 LINK_DIRECTORIES(
     C:/vcpkg/installed/x64-windows/lib/
 )
-add_executable(${PROJ_NAME} src/test.cpp)
+add_executable(${PROJ_NAME} src/main.cpp)
 TARGET_LINK_LIBRARIES(${PROJ_NAME} 
     raylib
 )

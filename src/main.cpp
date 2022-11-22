@@ -283,16 +283,16 @@ int main(void)
                         }
 
                         for (int j = 0; j < nb_fleches; j++)
-                        { //  Pour toutes les flèches
+                        { //  Pour toutes les flèches, qui n'ont pas encore touché leur cible 
                             if (fleches[j].cible == 0 && fleches[j].etat != 0)
                             {
                                 check_coll_b_f(fleches[j], ballons[i]);
                             }
                             if (fleches[j].cible == 1 && ballons[i].etat == 1)
-                            {
-                                ballons[i].etat = 0;
-                                fleches[j].cible = 2;
-                                fleches[j].etat = 0;
+                            { // si flèche a touché sa cible
+                                ballons[i].etat = 0; // ballon disparait
+                                fleches[j].cible = 2; 
+                                fleches[j].etat = 0; // flèche disparait
                                 money += 1; // dès qu'on éclate un ballon, on gagne 1 Money
                                 ballons_vivants -= 1;
                                 if (ballons_vivants <= 0)
@@ -305,12 +305,12 @@ int main(void)
                                 }
                             }
                             if (fleches[j].cible == 1 && ballons[i].etat == 1)
-                            {
+                            { // s'il a loupé sa cible 
                                 fleches[j].etat = 1;
                                 fleches[j].cible = 0;
                             }
                             if (fleches[j].cible == 2)
-                            {
+                            { // s'il a atteint le bord de la winddow
                                 fleches[j].etat = 0;
                             }
                         }
@@ -321,18 +321,18 @@ int main(void)
             for (int i = 0; i < nb_singes; i++)
             {
                 if (singes[i].fatigue_tir == 120)
-                {
+                { // on dessine les singes de type 1
                     dessiner_singe(singes[i], textsinge);
                 }
 
                 if (singes[i].fatigue_tir == 60)
-                {
+                { // on dessine les singes de type 2
                     dessiner_singe(singes[i], textsinge2);
                 }
             }
 
             for (int i = 0; i < nb_fleches; i++)
-            {
+            {// on dessine les flèches
                 dessiner_fleche(fleches[i]);
             }
 
@@ -351,14 +351,12 @@ int main(void)
     UnloadImage(im_singe2_bis);
 
     if (!need_to_close && victoire)
-    {
-        // a faire
+    { // lancer menu victoire
         menu_victoire();
     }
 
     if (!need_to_close && defaite)
-    {
-        // a faire
+    { // lancer menu defaite
         menu_defaite();
     }
 

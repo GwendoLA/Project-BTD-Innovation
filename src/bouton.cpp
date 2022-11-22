@@ -5,11 +5,11 @@
 
 typedef struct Button
 {
-    bool etat;
+    bool etat; //cliqué ou non 
     Vector2 position;
     Vector2 taille;
     Color color;
-    char ecriture[30];
+    char ecriture[30]; // taille de l'écriture
 } Button;
 
 Button creer_bouton(Vector2 position, Vector2 taille, char ecriture[30])

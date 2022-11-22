@@ -4,7 +4,7 @@
 #include "constantes.h"
 
 int compteur_chemin = 0;
-
+ // pour créer le chemin, constituer de rectangle disposé à l'aide d'une grille
 void lignes_chemin(int x_depart, int y, int x_arrivee, Rectangle liste[36], bool inversion)
 {
     if (inversion == false)
