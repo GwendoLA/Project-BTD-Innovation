@@ -16,8 +16,8 @@
     }
 #define COLOR_TEXT WHITE
 
-#define PATH_FLECHE "C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/flechette.png"
-#define PATH_SINGE1 "C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe3.png"
-#define PATH_SINGE2 "C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/singe2.png"
-#define PATH_VICTOIRE "C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/flechette.png"
-#define PATH_DEFAITE "C:/Users/Aurel/OneDrive/Documents/GitHub/Project-BTD-Innovation/src/flechette.png"
+#define PATH_FLECHE "src/flechette.png"
+#define PATH_SINGE1 "src/singe3.png"
+#define PATH_SINGE2 "src/singe2.png"
+#define PATH_VICTOIRE "src/flechette.png"
+#define PATH_DEFAITE "src/flechette.png"
