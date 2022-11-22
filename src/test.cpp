@@ -287,7 +287,7 @@ int main(void)
                         {
                             if (fleches[j].cible == 0 && fleches[j].etat != 0)
                             {
-                                fleches[j] = check_coll_b_f(fleches[j], ballons[i]);
+                                check_coll_b_f(fleches[j], ballons[i]);
                             }
                             if (fleches[j].cible == 1 && ballons[i].etat == 1)
                             {

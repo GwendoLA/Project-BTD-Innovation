@@ -33,7 +33,7 @@ Fleche creer_fleche(Vector2 position, Ballon B, Texture texture)
     return F;
 }
 
-float signaz(float &num)
+float sign(float &num)
 {
     if (num > 0.)
     {
@@ -107,8 +107,8 @@ void dessiner_fleche(Fleche &F)
             {F_center2.x, F_center2.y}};
         float distances = sqrt(pow(F_center2.x, 2) + pow(F_center2.y, 2));
         float current_angle2 = abs(atan(points[indice].y / points[indice].x));
-        Vector2 point_arrive = {(float)(F.position.x + signaz(points[indice].x) * distances * cos(signaz(points[indice].x) * signaz(points[indice].y) * angle2 + current_angle2)),
-                                (float)(F.position.y + signaz(points[indice].y) * distances * sin(signaz(points[indice].x) * signaz(points[indice].y) * angle2 + current_angle2))};
+        Vector2 point_arrive = {(float)(F.position.x + sign(points[indice].x) * distances * cos(sign(points[indice].x) * sign(points[indice].y) * angle2 + current_angle2)),
+                                (float)(F.position.y + sign(points[indice].y) * distances * sin(sign(points[indice].x) * sign(points[indice].y) * angle2 + current_angle2))};
         DrawTextureEx(F.texture, point_arrive, 180 * angle / M_PI, 0.1, WHITE);
     }
 }
@@ -132,9 +132,8 @@ bool check_coll_s_b(Singe S, Ballon B)
     return false;
 }
 
-Fleche check_coll_b_f(Fleche F, Ballon B)
+void check_coll_b_f(Fleche &F, Ballon B)
 {
-
     double angle = atan((F.dir_y) / (F.dir_x));
     Vector2 F_center = {F.size.x / 2, F.size.y / 2};
     Vector2 points[4] = {
@@ -142,41 +141,30 @@ Fleche check_coll_b_f(Fleche F, Ballon B)
         {F_center.x, -F_center.y},
         {-F_center.x, F_center.y},
         {F_center.x, F_center.y}};
-    /// on calcule uniquement une valeur des distances car elles sont théoriquement toutes les mêmes.
-    // float distances[4] = {};
-    // for (int i = 0; i < 4; i++)
-    // {
-    //     distances[i] = sqrt(pow(points[i].x, 2) + pow(points[i].y, 2));
-    // }
     float distances = sqrt(pow(F_center.x, 2) + pow(F_center.y, 2));
     Vector2 points_arrive[4] = {};
-    for (int i = 0; i < 4; i++)
-    {
+    // on calcule la position des coins du retangle tourné
+    for (int i = 0; i < 4; i++) {
         float current_angle = abs(atan(points[i].y / points[i].x));
-        points_arrive[i] = {(float)(F.position.x + signaz(points[i].x) * distances * cos(signaz(points[i].x) * signaz(points[i].y) * angle + current_angle)),
-                            (float)(F.position.y + signaz(points[i].y) * distances * sin(signaz(points[i].x) * signaz(points[i].y) * angle + current_angle))};
+        points_arrive[i] = {
+            (float)(
+                F.position.x + sign(points[i].x) * distances * cos(sign(points[i].x) * sign(points[i].y) * angle + current_angle)),
+            (float)(
+                F.position.y + sign(points[i].y) * distances * sin(sign(points[i].x) * sign(points[i].y) * angle + current_angle))
+        };
     }
-    for (int i = 0; i < 4; i++)
-    {
-        // DrawCircle(points_arrive[i].x, points_arrive[i].y, 5, VIOLET);
-        if (CheckCollisionPointCircle(points_arrive[i], B.position, B.radius))
-        {
+    for (int i = 0; i < 4; i++) {
+        // DrawCircle(points_arrive[i].x, points_arrive[i].y, 5, VIOLET); //affiche les coins du rectangle tourné
+        //essaye si les points touche le ballon
+        if (CheckCollisionPointCircle(points_arrive[i], B.position, B.radius)) {
             F.etat = 0;
             F.cible = 1;
         }
     }
-
-    // DrawRectangleRec(Rect_F, PURPLE);
-
-    // if (CheckCollisionCircleRec(B.position, B.radius, Rect_F))
-    // {
-    //     F.etat = 0;
-    //     F.cible = 1;
-    // }
+    // DrawRectangleRec(Rect_F, PURPLE); // affiche le rectangle originel (pas tourné)
     if ((F.position.x <= 0) || (F.position.y <= 0) || (F.position.x >= GetScreenWidth()) || (F.position.y >= GetScreenHeight()))
     {
         F.etat = 0;
         F.cible = 2;
     }
-    return F;
 }
